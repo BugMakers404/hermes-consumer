@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    implementation project(':hermes-consumer-vicroad')
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+}
+
+bootRun {
+    // support passing -Dsystem.property=value to bootRun task
+    // systemProperties is the jvm properties to run the springboot appliction
+    // Gradle uses the standard Java system properties to provide various configuration options and runtime information
+    systemProperties = System.properties
+
+    def appProps = findProperty('hermesAppProps')
+    if (appProps != null) {
+        systemProperty "spring.config.additional-location", appProps
+    }
+}
+
+jar {
+    enabled = false
+}
+
+bootJar {
+    enabled = true
+}
