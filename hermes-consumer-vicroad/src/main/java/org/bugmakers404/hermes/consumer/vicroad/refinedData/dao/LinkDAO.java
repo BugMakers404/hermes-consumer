@@ -5,4 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface LinkDAO extends MongoRepository<LinkEvent, String> {
 
+  LinkEvent findByLinkId(Integer linkId);
+
 }
