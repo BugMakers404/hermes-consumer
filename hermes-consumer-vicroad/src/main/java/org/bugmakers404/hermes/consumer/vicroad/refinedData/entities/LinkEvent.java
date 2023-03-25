@@ -1,8 +1,8 @@
 package org.bugmakers404.hermes.consumer.vicroad.refinedData.entities;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -38,10 +38,6 @@ public class LinkEvent implements Serializable {
 
   private Boolean draft;
 
+  @JsonAlias("latest_stats")
   private LinkStats latestStats;
-
-  @JsonProperty("latest_stats")
-  public void setLatestStats(LinkStats latestStats) {
-    this.latestStats = latestStats;
-  }
 }

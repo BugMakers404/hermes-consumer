@@ -12,6 +12,7 @@ import org.bugmakers404.hermes.consumer.vicroad.refinedData.entities.LinkEvent;
 import org.bugmakers404.hermes.consumer.vicroad.refinedData.service.interfaces.LinkService;
 import org.bugmakers404.hermes.consumer.vicroad.utils.Constants;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,7 +26,7 @@ public class KafkaEventsConsumer {
 
 
   @KafkaListener(topics = { Constants.BLUETOOTH_DATA_TOPIC_LINKS })
-  public void onMessage(ConsumerRecord<String, String> consumerRecord) throws JsonProcessingException {
+  public void onMessage(ConsumerRecord<String, String> consumerRecord, Acknowledgment acknowledgment) throws JsonProcessingException {
     LinkEvent linkEvent = objectMapper.readValue(consumerRecord.value(), LinkEvent.class);
 
     String[] timestampAndLinkId = consumerRecord.key().split("_");
@@ -35,13 +36,15 @@ public class KafkaEventsConsumer {
     LocalDateTime timestampWithoutZone = OffsetDateTime.parse(timestamp).atZoneSameInstant(ZoneId.of("Australia/Sydney"))
         .toLocalDateTime();
 
-//    System.out.println(consumerRecord.key());
-//    System.out.println(timestampWithoutZone);
     linkEvent.setId(consumerRecord.key());
     linkEvent.setLinkId(linkId);
     linkEvent.setTimestamp(timestampWithoutZone);
 
     linkService.saveOneLinkEvent(linkEvent);
-
+    acknowledgment.acknowledge();
   }
+
+
+
+
 }
