@@ -1,13 +1,13 @@
 package org.bugmakers404.hermes.consumer.vicroad.refinedData.service;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bugmakers404.hermes.consumer.vicroad.refinedData.dao.LinkDAO;
 import org.bugmakers404.hermes.consumer.vicroad.refinedData.entities.LinkEvent;
-import org.bugmakers404.hermes.consumer.vicroad.refinedData.service.interfaces.LinkService;
+import org.bugmakers404.hermes.consumer.vicroad.refinedData.service.interfaces.PersistentLinkService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PersistentLinkService implements LinkService {
+public class PersistentLinkServiceImpl implements PersistentLinkService {
 
   @NonNull
   private final LinkDAO linkDAO;
 
   @Override
-  public LinkEvent saveOneLinkEvent(LinkEvent linkEvent) {
+  public LinkEvent saveLinkEvent(LinkEvent linkEvent) {
     return linkDAO.save(linkEvent);
   }
 
@@ -36,15 +36,13 @@ public class PersistentLinkService implements LinkService {
   }
 
   @Override
-  public List<LinkEvent> getAllLinkEventsByTimestamp(LocalDateTime timestamp) {
+  public List<LinkEvent> getAllLinkEventsByTimestamp(OffsetDateTime timestamp) {
     return linkDAO.findAllByTimestamp(timestamp);
   }
 
   @Override
-  public LinkEvent getALinkEventByLinkIdAndTimestamp(Integer linkId, LocalDateTime timestamp) {
-    System.out.println(timestamp);
-    System.out.println(timestamp + "_" + linkId);
-    return linkDAO.findById(timestamp + "_" + linkId).orElseThrow();
+  public LinkEvent getLinkEventByLinkIdAndTimestamp(Integer linkId, OffsetDateTime timestamp) {
+    return linkDAO.findByLinkIdAndTimestamp(linkId, timestamp);
   }
 
 }

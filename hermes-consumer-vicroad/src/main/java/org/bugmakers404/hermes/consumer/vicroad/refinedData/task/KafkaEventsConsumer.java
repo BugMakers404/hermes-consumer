@@ -1,16 +1,15 @@
 package org.bugmakers404.hermes.consumer.vicroad.refinedData.task;
 
+import static org.bugmakers404.hermes.consumer.vicroad.utils.KafkaConstants.BLUETOOTH_DATA_TOPIC_LINKS;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.bugmakers404.hermes.consumer.vicroad.refinedData.entities.LinkEvent;
-import org.bugmakers404.hermes.consumer.vicroad.refinedData.service.interfaces.LinkService;
-import org.bugmakers404.hermes.consumer.vicroad.utils.Constants;
+import org.bugmakers404.hermes.consumer.vicroad.refinedData.service.interfaces.PersistentLinkService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
@@ -20,12 +19,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaEventsConsumer {
 
-  private final LinkService linkService;
+  private final PersistentLinkService persistentLinkService;
 
   private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
 
-  @KafkaListener(topics = { Constants.BLUETOOTH_DATA_TOPIC_LINKS })
+  @KafkaListener(topics = { BLUETOOTH_DATA_TOPIC_LINKS })
   public void onMessage(ConsumerRecord<String, String> consumerRecord, Acknowledgment acknowledgment) throws JsonProcessingException {
     LinkEvent linkEvent = objectMapper.readValue(consumerRecord.value(), LinkEvent.class);
 
@@ -33,14 +32,11 @@ public class KafkaEventsConsumer {
     String timestamp = timestampAndLinkId[0];
     Integer linkId = Integer.parseInt(timestampAndLinkId[1]);
 
-    LocalDateTime timestampWithoutZone = OffsetDateTime.parse(timestamp).atZoneSameInstant(ZoneId.of("Australia/Sydney"))
-        .toLocalDateTime();
-
     linkEvent.setId(consumerRecord.key());
     linkEvent.setLinkId(linkId);
-    linkEvent.setTimestamp(timestampWithoutZone);
+    linkEvent.setTimestamp(OffsetDateTime.parse(timestamp));
 
-    linkService.saveOneLinkEvent(linkEvent);
+    persistentLinkService.saveLinkEvent(linkEvent);
     acknowledgment.acknowledge();
   }
 

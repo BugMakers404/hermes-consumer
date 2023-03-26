@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bugmakers404.hermes.consumer.vicroad.refinedData.dao.LinkGeoInfoDAO;
 import org.bugmakers404.hermes.consumer.vicroad.refinedData.entities.LinkGeoInfo;
-import org.bugmakers404.hermes.consumer.vicroad.refinedData.service.interfaces.LinkGeoService;
+import org.bugmakers404.hermes.consumer.vicroad.refinedData.service.interfaces.PersistentLinkGeoService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PersistentLinkGeoService implements LinkGeoService {
+public class PersistentLinkGeoServiceImpl implements PersistentLinkGeoService {
 
   @NonNull
   private final LinkGeoInfoDAO linkGeoInfoDAO;
