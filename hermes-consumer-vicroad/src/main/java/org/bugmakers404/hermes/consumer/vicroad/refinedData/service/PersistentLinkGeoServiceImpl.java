@@ -1,6 +1,7 @@
 package org.bugmakers404.hermes.consumer.vicroad.refinedData.service;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +21,15 @@ public class PersistentLinkGeoServiceImpl implements PersistentLinkGeoService {
   private final LinkGeoInfoDAO linkGeoInfoDAO;
 
   @Override
-  public LinkGeoInfo saveLinkGeoInfo(LinkGeoInfo linkGeoInfo) {
-    return linkGeoInfoDAO.save(linkGeoInfo);
+  public LinkGeoInfo saveLinkGeoInfoIfChanged(LinkGeoInfo linkGeoInfo) {
+    Optional<LinkGeoInfo> latestLinkGeoInfoOpt = linkGeoInfoDAO.findTopByLinkIdOrderByTimestampDesc(
+        linkGeoInfo.getLinkId());
+
+    if (latestLinkGeoInfoOpt.isEmpty() || !latestLinkGeoInfoOpt.get().isSame(linkGeoInfo)) {
+      return linkGeoInfoDAO.save(linkGeoInfo);
+    } else {
+      return latestLinkGeoInfoOpt.get();
+    }
   }
 
   @Override

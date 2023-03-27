@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,13 +14,14 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Slf4j
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-//@Document(collection = "bluetooth_raw_data.links_with_geo")
+@Document(collection = "vicroad.bluetooth.link.geography")
 public class LinkGeoInfo implements Serializable {
 
   @Id
@@ -31,8 +33,8 @@ public class LinkGeoInfo implements Serializable {
 
   @NonNull
   @Indexed
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-  private LocalDateTime timestamp;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+  private OffsetDateTime timestamp;
 
   private String name;
 
@@ -57,15 +59,20 @@ public class LinkGeoInfo implements Serializable {
 
   private List<List<Double>> coordinates;
 
-//  @JsonProperty("origin.id")
-//  @JsonAlias("originId")
-//  public void setOriginId(Integer originId) {
-//    this.origin = originId;
-//  }
-//
-//  @JsonProperty("destination.id")
-//  @JsonAlias("destinationId")
-//  public void setDestinationId(Integer destinationId) {
-//    this.destination = destinationId;
-//  }
+  public boolean isSame(LinkGeoInfo other) {
+    if (this == other) {
+      return true;
+    }
+    if (other == null) {
+      return false;
+    }
+
+    return Objects.equals(linkId, other.linkId) && Objects.equals(name, other.name)
+        && Objects.equals(originId, other.originId) && Objects.equals(destinationId,
+        other.destinationId) && Objects.equals(length, other.length) && Objects.equals(
+        minNumberOfLanes, other.minNumberOfLanes) && Objects.equals(minTravelTime,
+        other.minTravelTime) && Objects.equals(isFreeway, other.isFreeway) && Objects.equals(
+        direction, other.direction) && Objects.equals(coordinates, other.coordinates);
+  }
+
 }

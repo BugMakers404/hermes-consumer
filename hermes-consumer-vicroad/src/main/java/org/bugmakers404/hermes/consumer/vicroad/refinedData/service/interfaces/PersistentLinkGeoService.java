@@ -5,7 +5,7 @@ import org.bugmakers404.hermes.consumer.vicroad.refinedData.entities.LinkGeoInfo
 
 public interface PersistentLinkGeoService {
 
-  LinkGeoInfo saveLinkGeoInfo(LinkGeoInfo linkGeoInfo);
+  LinkGeoInfo saveLinkGeoInfoIfChanged(LinkGeoInfo linkGeoInfo);
 
   LinkGeoInfo findLinkGeoInfoByLinkId(Integer linkId);
 
