@@ -1,6 +1,6 @@
 package org.bugmakers404.hermes.consumer.vicroad.entities.sites;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -10,39 +10,19 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 public class SiteStats {
 
+  @JsonAlias("interval_start")
   private String intervalStart;
 
+  @JsonAlias("probe_count")
   private Integer probeCount;
 
+  @JsonAlias("raw_probe_count")
   private Integer rawProbeCount;
 
+  @JsonAlias("raw_probe_count")
   private Integer estimatedEventCount;
 
+  @JsonAlias("average_duration")
   private Integer averageDuration;
 
-
-  @JsonProperty("interval_start")
-  public void setIntervalStartTime(String intervalStartTime) {
-    this.intervalStart = intervalStartTime;
-  }
-
-  @JsonProperty("probe_count")
-  public void setProbeCount(Integer probeCount) {
-    this.probeCount = probeCount;
-  }
-
-  @JsonProperty("raw_probe_count")
-  public void setRawProbeCount(Integer rawProbeCount) {
-    this.rawProbeCount = rawProbeCount;
-  }
-
-  @JsonProperty("estimated_event_count")
-  public void setEstimatedEventCount(Integer estimatedEventCount) {
-    this.estimatedEventCount = estimatedEventCount;
-  }
-
-  @JsonProperty("average_duration")
-  public void setAverageDuration(Integer averageDuration) {
-    this.averageDuration = averageDuration;
-  }
 }

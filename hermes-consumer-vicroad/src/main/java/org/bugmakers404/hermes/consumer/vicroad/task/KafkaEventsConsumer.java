@@ -3,6 +3,7 @@ package org.bugmakers404.hermes.consumer.vicroad.task;
 import static org.bugmakers404.hermes.consumer.vicroad.utils.KafkaConstants.BLUETOOTH_DATA_TOPIC_LINKS;
 import static org.bugmakers404.hermes.consumer.vicroad.utils.KafkaConstants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO;
 import static org.bugmakers404.hermes.consumer.vicroad.utils.KafkaConstants.BLUETOOTH_DATA_TOPIC_ROUTES;
+import static org.bugmakers404.hermes.consumer.vicroad.utils.KafkaConstants.BLUETOOTH_DATA_TOPIC_SITES;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.OffsetDateTime;
@@ -13,10 +14,14 @@ import org.bugmakers404.hermes.consumer.vicroad.entities.links.LinkEvent;
 import org.bugmakers404.hermes.consumer.vicroad.entities.links.LinkInfo;
 import org.bugmakers404.hermes.consumer.vicroad.entities.routes.RouteEvent;
 import org.bugmakers404.hermes.consumer.vicroad.entities.routes.RouteInfo;
+import org.bugmakers404.hermes.consumer.vicroad.entities.sites.SiteEvent;
+import org.bugmakers404.hermes.consumer.vicroad.entities.sites.SiteInfo;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkInfoService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkEventService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteEventService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteInfoService;
+import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteEventService;
+import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteInfoService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
@@ -26,13 +31,17 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaEventsConsumer {
 
-  private final PersistentLinkEventService persistentLinkEventService;
+  private final PersistentLinkEventService linkEventService;
 
-  private final PersistentLinkInfoService persistentLinkInfoService;
+  private final PersistentLinkInfoService linkInfoService;
 
-  private final PersistentRouteEventService persistentRouteEventService;
+  private final PersistentRouteEventService routeEventService;
 
-  private final PersistentRouteInfoService persistentRouteInfoService;
+  private final PersistentRouteInfoService routeInfoService;
+
+  private final PersistentSiteEventService siteEventService;
+
+  private final PersistentSiteInfoService siteInfoService;
 
   private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
@@ -49,7 +58,7 @@ public class KafkaEventsConsumer {
     linkEvent.setLinkId(linkId);
     linkEvent.setTimestamp(OffsetDateTime.parse(timestamp));
 
-    persistentLinkEventService.saveLinkEvent(linkEvent);
+    linkEventService.saveLinkEvent(linkEvent);
     ack.acknowledge();
   }
 
@@ -67,7 +76,7 @@ public class KafkaEventsConsumer {
     linkInfo.setLinkId(linkId);
     linkInfo.setTimestamp(OffsetDateTime.parse(timestamp));
 
-    persistentLinkInfoService.saveLinkInfoIfChanged(linkInfo);
+    linkInfoService.saveLinkInfoIfChanged(linkInfo);
     ack.acknowledge();
   }
 
@@ -91,8 +100,36 @@ public class KafkaEventsConsumer {
     routeEvent.setTimestamp(OffsetDateTime.parse(timestamp));
     routeInfo.setTimestamp(OffsetDateTime.parse(timestamp));
 
-    persistentRouteEventService.saveRouteEvent(routeEvent);
-    persistentRouteInfoService.saveRouteInfoIfChanged(routeInfo);
+    routeEventService.saveRouteEvent(routeEvent);
+    routeInfoService.saveRouteInfoIfChanged(routeInfo);
+
+    ack.acknowledge();
+  }
+
+  @KafkaListener(topics = {BLUETOOTH_DATA_TOPIC_SITES})
+  public void persistSiteEvent(ConsumerRecord<String, String> record, Acknowledgment ack)
+      throws Exception {
+
+    SiteEvent siteEvent = objectMapper.readValue(record.value(), SiteEvent.class);
+    SiteInfo siteInfo = objectMapper.readValue(record.value(), SiteInfo.class);
+
+    String[] timestampAndRouteId = record.key().split("_");
+    String timestamp = timestampAndRouteId[0];
+    Integer siteId = Integer.parseInt(timestampAndRouteId[1]);
+
+    siteEvent.setId(record.key());
+    siteInfo.setId(record.key());
+
+    siteEvent.setSiteId(siteId);
+    siteInfo.setSiteId(siteId);
+
+    siteEvent.setTimestamp(OffsetDateTime.parse(timestamp));
+    siteInfo.setTimestamp(OffsetDateTime.parse(timestamp));
+
+    siteEventService.saveSiteEvent(siteEvent);
+    siteInfoService.saveSiteInfoIfChanged(siteInfo);
+
+    ack.acknowledge();
   }
 
 }

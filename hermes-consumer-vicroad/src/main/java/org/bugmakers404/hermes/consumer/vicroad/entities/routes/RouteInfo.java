@@ -73,8 +73,7 @@ public class RouteInfo {
       return false;
     }
 
-    return Objects.equals(routeId, other.routeId)
-        && Objects.equals(name, other.name)
+    return Objects.equals(name, other.name)
         && Objects.equals(primaryRoadName, other.primaryRoadName)
         && Objects.equals(startEndDescription, other.startEndDescription)
         && Objects.equals(length, other.length)

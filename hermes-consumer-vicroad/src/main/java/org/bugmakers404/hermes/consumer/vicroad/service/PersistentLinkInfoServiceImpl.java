@@ -21,13 +21,13 @@ public class PersistentLinkInfoServiceImpl implements PersistentLinkInfoService 
 
   @Override
   public LinkInfo saveLinkInfoIfChanged(LinkInfo linkGeoInfo) {
-    LinkInfo latestLinkGeoInfo = linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(
+    LinkInfo latestLinkInfo = linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(
         linkGeoInfo.getLinkId());
 
-    if (latestLinkGeoInfo == null || !latestLinkGeoInfo.isSame(linkGeoInfo)) {
+    if (latestLinkInfo == null || !latestLinkInfo.isSame(linkGeoInfo)) {
       return linkInfoDAO.save(linkGeoInfo);
     } else {
-      return latestLinkGeoInfo;
+      return latestLinkInfo;
     }
   }
 
