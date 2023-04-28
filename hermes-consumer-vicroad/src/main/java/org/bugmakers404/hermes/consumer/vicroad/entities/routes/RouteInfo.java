@@ -28,7 +28,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class RouteInfo {
 
   @Id
-  private Integer id;
+  private String id;
 
   @NonNull
   @Indexed

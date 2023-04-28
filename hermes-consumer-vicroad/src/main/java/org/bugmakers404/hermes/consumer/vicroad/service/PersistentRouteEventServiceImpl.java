@@ -21,7 +21,7 @@ public class PersistentRouteEventServiceImpl implements PersistentRouteEventServ
   private final RouteEventDAO routeEventDAO;
 
   @Override
-  public RouteEvent saveLinkEvent(RouteEvent routeEvent) {
+  public RouteEvent saveRouteEvent(RouteEvent routeEvent) {
     return routeEventDAO.save(routeEvent);
   }
 

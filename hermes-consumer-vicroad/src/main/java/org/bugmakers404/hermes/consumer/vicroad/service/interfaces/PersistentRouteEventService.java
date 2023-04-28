@@ -5,7 +5,7 @@ import java.util.List;
 import org.bugmakers404.hermes.consumer.vicroad.entities.routes.RouteEvent;
 
 public interface PersistentRouteEventService {
-  RouteEvent saveLinkEvent(RouteEvent routeEvent);
+  RouteEvent saveRouteEvent(RouteEvent routeEvent);
 
   List<RouteEvent> getAllRouteEvents();
 

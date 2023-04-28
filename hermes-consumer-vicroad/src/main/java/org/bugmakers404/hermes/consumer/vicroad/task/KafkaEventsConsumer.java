@@ -15,6 +15,8 @@ import org.bugmakers404.hermes.consumer.vicroad.entities.routes.RouteEvent;
 import org.bugmakers404.hermes.consumer.vicroad.entities.routes.RouteInfo;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkInfoService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkEventService;
+import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteEventService;
+import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteInfoService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
@@ -28,8 +30,11 @@ public class KafkaEventsConsumer {
 
   private final PersistentLinkInfoService persistentLinkInfoService;
 
-  private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+  private final PersistentRouteEventService persistentRouteEventService;
 
+  private final PersistentRouteInfoService persistentRouteInfoService;
+
+  private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
   @KafkaListener(topics = {BLUETOOTH_DATA_TOPIC_LINKS})
   public void persistLinkEvent(ConsumerRecord<String, String> record, Acknowledgment ack)
@@ -52,17 +57,17 @@ public class KafkaEventsConsumer {
   public void persistLinkWithGeoEvent(ConsumerRecord<String, String> record, Acknowledgment ack)
       throws Exception {
 
-    LinkInfo linkGeoInfo = objectMapper.readValue(record.value(), LinkInfo.class);
+    LinkInfo linkInfo = objectMapper.readValue(record.value(), LinkInfo.class);
 
     String[] timestampAndLinkId = record.key().split("_");
     String timestamp = timestampAndLinkId[0];
     Integer linkId = Integer.parseInt(timestampAndLinkId[1]);
 
-    linkGeoInfo.setId(record.key());
-    linkGeoInfo.setLinkId(linkId);
-    linkGeoInfo.setTimestamp(OffsetDateTime.parse(timestamp));
+    linkInfo.setId(record.key());
+    linkInfo.setLinkId(linkId);
+    linkInfo.setTimestamp(OffsetDateTime.parse(timestamp));
 
-    persistentLinkInfoService.saveLinkInfoIfChanged(linkGeoInfo);
+    persistentLinkInfoService.saveLinkInfoIfChanged(linkInfo);
     ack.acknowledge();
   }
 
@@ -73,8 +78,21 @@ public class KafkaEventsConsumer {
     RouteEvent routeEvent = objectMapper.readValue(record.value(), RouteEvent.class);
     RouteInfo routeInfo = objectMapper.readValue(record.value(), RouteInfo.class);
 
+    String[] timestampAndRouteId = record.key().split("_");
+    String timestamp = timestampAndRouteId[0];
+    Integer routeId = Integer.parseInt(timestampAndRouteId[1]);
 
+    routeEvent.setId(record.key());
+    routeInfo.setId(record.key());
+
+    routeEvent.setRouteId(routeId);
+    routeInfo.setRouteId(routeId);
+
+    routeEvent.setTimestamp(OffsetDateTime.parse(timestamp));
+    routeInfo.setTimestamp(OffsetDateTime.parse(timestamp));
+
+    persistentRouteEventService.saveRouteEvent(routeEvent);
+    persistentRouteInfoService.saveRouteInfoIfChanged(routeInfo);
   }
-
 
 }

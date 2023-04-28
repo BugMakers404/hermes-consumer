@@ -19,7 +19,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class RouteEvent implements Serializable {
 
   @Id
-  private Integer id;
+  private String id;
 
   @NonNull
   @Indexed
