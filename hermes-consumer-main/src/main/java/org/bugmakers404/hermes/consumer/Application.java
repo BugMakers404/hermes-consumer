@@ -1,5 +1,6 @@
 package org.bugmakers404.hermes.consumer;
 
+import java.util.TimeZone;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Application {
 
   public static void main(String[] args) {
+    TimeZone.setDefault(TimeZone.getTimeZone("Australia/Sydney"));
     SpringApplication.run(Application.class, args);
   }
 

@@ -28,7 +28,7 @@ public class AsyncConfig implements AsyncConfigurer{
     pool.setCorePoolSize(poolSize / 2);
     pool.setMaxPoolSize(poolSize);
     pool.setThreadNamePrefix("HCExec-");
-    pool.setThreadPriority(Thread.MIN_PRIORITY);
+    pool.setThreadPriority(Thread.NORM_PRIORITY);
     pool.initialize();
     return pool;
   }
