@@ -1,7 +1,9 @@
 plugins {
-    id 'org.springframework.boot' version '3.0.2'
-    id 'com.palantir.git-version' version '2.0.0'
+    id 'com.palantir.git-version' version '3.0.0'
     id "com.avast.gradle.docker-compose" version "0.16.11"
+    id "io.freefair.lombok" version "8.0.1"
+    id "io.spring.dependency-management" version "1.1.0"
+    id 'org.springframework.boot' version '3.0.6' apply false
 }
 
 allprojects {
@@ -12,21 +14,45 @@ subprojects {
     apply plugin: 'com.palantir.git-version'
     apply plugin: 'java-library'
     apply plugin: 'java'
-    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.freefair.lombok'
     apply plugin: 'io.spring.dependency-management'
 
     group 'org.bugmakers404.hermes'
+
     def versionDetails = versionDetails()
-    def versionSuffix  = project.hasProperty('release') ? '-RELEASE' : '-SNAPSHOT'
-    version = versionDetails.lastTag  + versionSuffix
+    def versionSuffix = project.hasProperty('release') ? '-RELEASE' : '-SNAPSHOT'
+    def isRunningInPipeline = project.findProperty('isRunningInPipeline') == 'true'
+
+    if (isRunningInPipeline) {
+        version = 'latest' + versionSuffix
+    } else {
+        version = versionDetails.lastTag + versionSuffix
+    }
 
     repositories {
         mavenCentral()
     }
 
+    dependencies {
+        implementation platform('org.springframework.boot:spring-boot-dependencies:3.0.6')
+        implementation 'org.apache.httpcomponents:httpclient:4.5.14'
+
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+            exclude group: 'junit', module: 'junit'
+        }
+
+        testImplementation 'org.testng:testng:7.7.1'
+    }
+
     test {
         useTestNG()
+        def appProps = findProperty('hermesProducerAppProps')
+        if (appProps != null) {
+            systemProperty "spring.config.additional-location", appProps
+        }
     }
+
 }
 
 def userName = findProperty('hermesMongoRootUserName').toString()
@@ -39,3 +65,9 @@ dockerCompose {
     environment.put "HERMES_MONGODB_ROOT_USER_PASSWORD", password
     useComposeFiles = ['docker/local/docker-compose.yaml']
 }
+
+
+
+
+
+

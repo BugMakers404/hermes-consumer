@@ -83,7 +83,7 @@ public class KafkaEventsConsumer {
   @KafkaListener(topics = {BLUETOOTH_DATA_TOPIC_ROUTES})
   public void persistRouteEvent(ConsumerRecord<String, String> record, Acknowledgment ack)
       throws Exception {
-
+    System.out.println(record.value());
     RouteEvent routeEvent = objectMapper.readValue(record.value(), RouteEvent.class);
     RouteInfo routeInfo = objectMapper.readValue(record.value(), RouteInfo.class);
 
@@ -128,7 +128,6 @@ public class KafkaEventsConsumer {
 
     siteEventService.saveSiteEvent(siteEvent);
     siteInfoService.saveSiteInfoIfChanged(siteInfo);
-
     ack.acknowledge();
   }
 
