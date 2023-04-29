@@ -1,17 +1,12 @@
-plugins {
-    id 'java'
-}
+apply plugin: 'org.springframework.boot'
 
 dependencies {
     implementation project(':hermes-consumer-vicroad')
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
 }
 
 springBoot {
-    mainClass = 'org.bugmakers404.hermes.consumer.Application'
+    mainClass = 'org.bugmakers404.hermes.producer.Application'
 }
 
 bootRun {
@@ -21,8 +16,11 @@ bootRun {
     systemProperties = System.properties as Map<String, ?>
 
     // Apply the external application.properties
-    systemProperty "spring.config.additional-location", hermesConsumerAppProps
-
+    // Please note do not use hermesProducerAppProps directly since CI server does not store it
+    def appProps = findProperty('hermesProducerAppProps')
+    if (appProps != null) {
+        systemProperty "spring.config.additional-location", appProps
+    }
 }
 
 jar {
@@ -31,8 +29,4 @@ jar {
 
 bootJar {
     enabled = true
-    from(hermesConsumerAppProps) {
-        into 'BOOT-INF/classes'
-        rename 'hermes-consumer-application.properties', 'application.properties'
-    }
 }
