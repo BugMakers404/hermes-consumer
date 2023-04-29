@@ -7,7 +7,9 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -15,6 +17,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Slf4j
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Document(collection = "vicroad.bluetooth.link.info")
 public class LinkInfo implements Serializable {

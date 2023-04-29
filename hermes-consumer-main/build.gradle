@@ -6,7 +6,7 @@ dependencies {
 }
 
 springBoot {
-    mainClass = 'org.bugmakers404.hermes.producer.Application'
+    mainClass = 'org.bugmakers404.hermes.consumer.Application'
 }
 
 bootRun {
@@ -17,7 +17,7 @@ bootRun {
 
     // Apply the external application.properties
     // Please note do not use hermesProducerAppProps directly since CI server does not store it
-    def appProps = findProperty('hermesProducerAppProps')
+    def appProps = findProperty('hermesConsumerAppProps')
     if (appProps != null) {
         systemProperty "spring.config.additional-location", appProps
     }
