@@ -45,8 +45,9 @@ public class KafkaConsumerServiceImpl {
 
   private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
-  @KafkaListener(topics = {
-      Constants.BLUETOOTH_DATA_TOPIC_LINKS}, concurrency = Constants.KAFKA_PARTITION_COUNT)
+  @KafkaListener(topics = {Constants.BLUETOOTH_DATA_TOPIC_LINKS},
+      clientIdPrefix = Constants.BLUETOOTH_DATA_TOPIC_LINKS,
+      concurrency = Constants.KAFKA_PARTITION_COUNT)
   public void persistLinkEvent(@NonNull ConsumerRecord<String, String> record, Acknowledgment ack) {
 
     String[] timestampAndLinkId = record.key().split("_");
@@ -64,8 +65,7 @@ public class KafkaConsumerServiceImpl {
     } catch (Exception e) {
 
       log.error("{} - Failed to persist the event with key {}-{}: {}",
-          Constants.BLUETOOTH_DATA_TOPIC_LINKS,
-          timestamp, linkId, e.getMessage(), e);
+          Constants.BLUETOOTH_DATA_TOPIC_LINKS, timestamp, linkId, e.getMessage(), e);
       s3Archiver.archiveFailedLinkEvents(timestamp, linkId, record.value());
 
     } finally {
@@ -74,8 +74,9 @@ public class KafkaConsumerServiceImpl {
 
   }
 
-  @KafkaListener(topics = {
-      Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO}, concurrency = Constants.KAFKA_PARTITION_COUNT)
+  @KafkaListener(topics = {Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO},
+      clientIdPrefix = Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO,
+      concurrency = Constants.KAFKA_PARTITION_COUNT)
   public void persistLinkWithGeoEvent(@NonNull ConsumerRecord<String, String> record,
       Acknowledgment ack) {
     String[] timestampAndLinkId = record.key().split("_");
@@ -93,8 +94,7 @@ public class KafkaConsumerServiceImpl {
     } catch (Exception e) {
 
       log.error("{} - Failed to persist the event with key {}-{}: {}",
-          Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO,
-          timestamp, linkId, e.getMessage(), e);
+          Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, timestamp, linkId, e.getMessage(), e);
       s3Archiver.archiveFailedLinkWithGeoEvents(timestamp, linkId, record.value());
 
     } finally {
@@ -103,8 +103,9 @@ public class KafkaConsumerServiceImpl {
 
   }
 
-  @KafkaListener(topics = {
-      Constants.BLUETOOTH_DATA_TOPIC_ROUTES}, concurrency = Constants.KAFKA_PARTITION_COUNT)
+  @KafkaListener(topics = {Constants.BLUETOOTH_DATA_TOPIC_ROUTES},
+      clientIdPrefix = Constants.BLUETOOTH_DATA_TOPIC_ROUTES,
+      concurrency = Constants.KAFKA_PARTITION_COUNT)
   public void persistRouteEvent(@NonNull ConsumerRecord<String, String> record,
       Acknowledgment ack) {
 
@@ -132,8 +133,7 @@ public class KafkaConsumerServiceImpl {
     } catch (Exception e) {
 
       log.error("{} - Failed to persist the event with key {}-{}: {}",
-          Constants.BLUETOOTH_DATA_TOPIC_ROUTES,
-          timestamp, routeId, e.getMessage(), e);
+          Constants.BLUETOOTH_DATA_TOPIC_ROUTES, timestamp, routeId, e.getMessage(), e);
       s3Archiver.archiveFailedRouteEvents(timestamp, routeId, record.value());
 
     } finally {
@@ -142,8 +142,9 @@ public class KafkaConsumerServiceImpl {
 
   }
 
-  @KafkaListener(topics = {
-      Constants.BLUETOOTH_DATA_TOPIC_SITES}, concurrency = Constants.KAFKA_PARTITION_COUNT)
+  @KafkaListener(topics = {Constants.BLUETOOTH_DATA_TOPIC_SITES},
+      clientIdPrefix = Constants.BLUETOOTH_DATA_TOPIC_SITES,
+      concurrency = Constants.KAFKA_PARTITION_COUNT)
   public void persistSiteEvent(@NonNull ConsumerRecord<String, String> record, Acknowledgment ack) {
 
     String[] timestampAndRouteId = record.key().split("_");
@@ -170,8 +171,7 @@ public class KafkaConsumerServiceImpl {
     } catch (Exception e) {
 
       log.error("{} - Failed to persist the event with key {}-{}: {}",
-          Constants.BLUETOOTH_DATA_TOPIC_SITES,
-          timestamp, siteId, e.getMessage(), e);
+          Constants.BLUETOOTH_DATA_TOPIC_SITES, timestamp, siteId, e.getMessage(), e);
       s3Archiver.archiveFailedSiteEvents(timestamp, siteId, record.value());
 
     } finally {
