@@ -1,0 +1,156 @@
+name: Java CI with Gradle
+
+on:
+  push:
+    branches:
+      - '**'
+    paths-ignore:
+      - 'README.md'
+  pull_request:
+    branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+
+env:
+  GRADLE_VERSION: "8.1.1"
+  JDK_VERSION: "17"
+  DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+  IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+  AWS_SSH_PRIVATE_KEY: ${{ secrets.AWS_SSH_PRIVATE_KEY }}
+  LIGHTSAIL_IP: ${{ secrets.LIGHTSAIL_IP }}
+
+
+jobs:
+  buildAndTest:
+    name: Build and Run Tests
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out the current branch
+        uses: actions/checkout@v3
+
+      - name: Get the git version
+        run: echo "GIT_VERSION=$(git describe --tags --always)" >> $GITHUB_ENV
+
+      # secrets.APPLICATION_PROPERTIES is the content instead of the path to application.properties
+      - name: Create application.properties
+        run:
+          echo "${{ secrets.APPLICATION_PROPERTIES }}" > application.properties
+
+      - name: Create container resources required by hermes-producer
+        run:
+          docker compose -f docker/local/docker-compose.yaml up -d
+
+      - name: Build and Test with Gradle
+        run: |
+          docker run --network host \
+                     --rm --mount type=bind,source=$GITHUB_WORKSPACE,target=/home/gradle/project \
+                     -w /home/gradle/project gradle:${{ env.GRADLE_VERSION }}-jdk${{ env.JDK_VERSION }}-jammy \
+                     bash -c "gradle -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs='-Xms512M -Xmx1g' \
+                                     -PhermesAppProps=/home/gradle/project/application.properties \
+                                     -PgitVersion=${{ env.GIT_VERSION }} \
+                                     -i clean check build"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: '**/TEST-*.xml'
+
+      - name: Clean up Docker resources
+        if: always()
+        run: docker compose -f docker/local/docker-compose.yaml down
+
+      - name: Remove application.properties
+        if: always()
+        run:
+          rm application.properties
+
+
+  publishTestResults:
+    name: Publish Test Results
+    runs-on: ubuntu-22.04
+
+    needs: [ buildAndTest ]
+    if: always()
+
+    steps:
+      - name: Check out the current branch
+        uses: actions/checkout@v3
+
+      - name: Download test results
+        uses: actions/download-artifact@v3
+        with:
+          name: test-results
+
+      - name: Display test results summary
+        uses: dorny/test-reporter@v1.6.0
+        with:
+          name: Test Results
+          path: '**/TEST-*.xml'
+          reporter: java-junit
+
+
+  buildAndPush:
+    name: Build and Push the Image
+    runs-on: ubuntu-22.04
+
+    needs: [ buildAndTest ]
+    if: >
+      (github.ref == 'refs/heads/main' && github.event_name == 'push') ||
+      (github.event_name == 'pull_request' && github.event.pull_request.merged)
+
+    steps:
+      - name: Check out the current branch
+        uses: actions/checkout@v3
+
+      - name: Get the git version
+        run: echo "GIT_VERSION=$(git describe --tags --always)" >> $GITHUB_ENV
+
+      - name: Build with Gradle
+        run: |
+          docker run --network host \
+                     --rm --mount type=bind,source=$GITHUB_WORKSPACE,target=/home/gradle/project \
+                     -w /home/gradle/project gradle:${{ env.GRADLE_VERSION }}-jdk${{ env.JDK_VERSION }}-jammy \
+                     bash -c "gradle -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs='-Xms512M -Xmx1g' \
+                                     -PgitVersion=${{ env.GIT_VERSION }} \
+                                     -i clean check build -x test"
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: docker/pipeline/Dockerfile
+          push: true
+          tags: |
+            ${{ env.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.GIT_VERSION }}
+
+
+  deploy:
+    name: Deploy the Latest Image
+    runs-on: ubuntu-22.04
+
+    needs: [ buildAndPush ]
+
+    steps:
+      - name: Deploy to AWS Lightsail
+        run: |
+          echo "${{ env.AWS_SSH_PRIVATE_KEY }}" > my_key.pem
+          chmod 600 my_key.pem
+          ssh -o StrictHostKeyChecking=no -i my_key.pem ubuntu@${{ env.LIGHTSAIL_IP }} '
+            docker pull ${{ env.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest &&
+            docker rm -f ${{ env.IMAGE_NAME }} || true &&
+            docker run -d --name ${{ env.IMAGE_NAME }} \
+                       --mount type=bind,source=/home/ubuntu/app/application.properties,destination=/app/application.properties,readonly \
+                       --mount type=bind,source=/home/ubuntu/app/data,destination=/app/vicroad_data_archives \
+                       --mount type=bind,source=/home/ubuntu/.aws,destination=/root/.aws,readonly \
+                       ${{ env.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+          '
