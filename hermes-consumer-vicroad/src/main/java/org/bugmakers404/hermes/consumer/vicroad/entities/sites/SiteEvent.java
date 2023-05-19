@@ -37,5 +37,5 @@ public class SiteEvent implements Serializable {
   private Boolean draft;
 
   @JsonAlias("latest_stats")
-  private LinkStats latestStats;
+  private SiteStats latestStats;
 }

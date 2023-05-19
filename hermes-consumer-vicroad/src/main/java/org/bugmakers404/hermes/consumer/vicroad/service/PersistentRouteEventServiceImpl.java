@@ -1,7 +1,5 @@
 package org.bugmakers404.hermes.consumer.vicroad.service;
 
-import java.time.OffsetDateTime;
-import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,28 +23,4 @@ public class PersistentRouteEventServiceImpl implements PersistentRouteEventServ
     return routeEventDAO.save(routeEvent);
   }
 
-  @Override
-  public List<RouteEvent> getAllRouteEvents() {
-    return routeEventDAO.findAll();
-  }
-
-  @Override
-  public List<RouteEvent> getAllLinkEventsByRouteId(Integer routeId) {
-    return routeEventDAO.findAllByRouteId(routeId);
-  }
-
-  @Override
-  public RouteEvent getLatestLinkEventByRouteId(Integer routeId) {
-    return routeEventDAO.findTopByRouteIdOrderByTimestampDesc(routeId);
-  }
-
-  @Override
-  public List<RouteEvent> getAllRouteEventsByTimestamp(OffsetDateTime timestamp) {
-    return routeEventDAO.findAllByTimestamp(timestamp);
-  }
-
-  @Override
-  public RouteEvent getRouteEventByLinkIdAndTimestamp(Integer routeId, OffsetDateTime timestamp) {
-    return routeEventDAO.findByRouteIdAndTimestamp(routeId, timestamp);
-  }
 }

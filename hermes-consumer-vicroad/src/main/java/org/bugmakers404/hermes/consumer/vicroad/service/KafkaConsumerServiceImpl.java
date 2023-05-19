@@ -1,7 +1,6 @@
 package org.bugmakers404.hermes.consumer.vicroad.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.OffsetDateTime;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +22,8 @@ import org.bugmakers404.hermes.consumer.vicroad.utils.Constants;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
+
+import java.time.OffsetDateTime;
 
 @Component
 @Slf4j
@@ -89,7 +90,9 @@ public class KafkaConsumerServiceImpl {
       linkInfo.setId(record.key());
       linkInfo.setLinkId(linkId);
       linkInfo.setTimestamp(timestamp);
+      System.out.println("1");
       linkInfoService.saveLinkInfoIfChanged(linkInfo);
+      System.out.println("2");
 
     } catch (Exception e) {
 

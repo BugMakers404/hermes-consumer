@@ -17,7 +17,7 @@ public class Constants {
 
   // Constants for Timestamp format
   public final static DateTimeFormatter DATE_TIME_FORMATTER_FOR_FILENAME = DateTimeFormatter.ofPattern(
-      "yyyy-MM-dd_HH-mm-ss");
+          "yyyy-MM-dd_HH-mm-ssx");
 
   // Constants for AWS S3
   public final static String HERMES_DATA_BUCKET_NAME = "hermes-data-archives";
@@ -25,11 +25,11 @@ public class Constants {
   // Constants for archiving data
   public final static String VICROAD_DATA_ARCHIVES_ROOT = "vicroad_data_archives";
 
-  public final static String VICROAD_DATA_ARCHIVE_COMMON_DIR =
-      VICROAD_DATA_ARCHIVES_ROOT + "/failed";
+  public final static String VICROAD_DATA_ARCHIVE_FAILED_DIR =
+          VICROAD_DATA_ARCHIVES_ROOT + "/failed";
 
   public final static String BLUETOOTH_DATA_ARCHIVES_DIR =
-      VICROAD_DATA_ARCHIVE_COMMON_DIR + "/bluetooth";
+          VICROAD_DATA_ARCHIVE_FAILED_DIR + "/bluetooth";
 
   public final static String LINKS_ARCHIVES_DIR = BLUETOOTH_DATA_ARCHIVES_DIR + "/links";
 
