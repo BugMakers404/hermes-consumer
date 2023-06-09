@@ -59,7 +59,10 @@ public class KafkaConsumerServiceImpl {
 
       LinkEvent linkEvent = objectMapper.readValue(record.value(), LinkEvent.class);
       linkEvent.setId(null);
+      linkEvent.setLinkId(linkId);
+      linkEvent.setTimestamp(timestamp);
       linkEventService.saveLinkEvent(linkEvent);
+      ack.acknowledge();
 
     } catch (Exception e) {
 
@@ -67,8 +70,6 @@ public class KafkaConsumerServiceImpl {
           Constants.BLUETOOTH_DATA_TOPIC_LINKS, timestamp, linkId, e.getMessage(), e);
       s3Archiver.archiveFailedLinkEvents(timestamp, linkId, record.value());
 
-    } finally {
-      ack.acknowledge();
     }
 
   }
@@ -86,7 +87,10 @@ public class KafkaConsumerServiceImpl {
 
       LinkInfo linkInfo = objectMapper.readValue(record.value(), LinkInfo.class);
       linkInfo.setId(null);
+      linkInfo.setLinkId(linkId);
+      linkInfo.setTimestamp(timestamp);
       linkInfoService.saveLinkInfoIfChanged(linkInfo);
+      ack.acknowledge();
 
     } catch (Exception e) {
 
@@ -94,8 +98,6 @@ public class KafkaConsumerServiceImpl {
           Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, timestamp, linkId, e.getMessage(), e);
       s3Archiver.archiveFailedLinkWithGeoEvents(timestamp, linkId, record.value());
 
-    } finally {
-      ack.acknowledge();
     }
 
   }
@@ -114,11 +116,16 @@ public class KafkaConsumerServiceImpl {
 
       RouteEvent routeEvent = objectMapper.readValue(record.value(), RouteEvent.class);
       routeEvent.setId(null);
+      routeEvent.setRouteId(routeId);
+      routeEvent.setTimestamp(timestamp);
       routeEventService.saveRouteEvent(routeEvent);
 
       RouteInfo routeInfo = objectMapper.readValue(record.value(), RouteInfo.class);
       routeInfo.setId(null);
+      routeInfo.setRouteId(routeId);
+      routeInfo.setTimestamp(timestamp);
       routeInfoService.saveRouteInfoIfChanged(routeInfo);
+      ack.acknowledge();
 
     } catch (Exception e) {
 
@@ -126,8 +133,6 @@ public class KafkaConsumerServiceImpl {
           Constants.BLUETOOTH_DATA_TOPIC_ROUTES, timestamp, routeId, e.getMessage(), e);
       s3Archiver.archiveFailedRouteEvents(timestamp, routeId, record.value());
 
-    } finally {
-      ack.acknowledge();
     }
 
   }
@@ -145,11 +150,17 @@ public class KafkaConsumerServiceImpl {
 
       SiteEvent siteEvent = objectMapper.readValue(record.value(), SiteEvent.class);
       siteEvent.setId(null);
+      siteEvent.setSiteId(siteId);
+      siteEvent.setTimestamp(timestamp);
       siteEventService.saveSiteEvent(siteEvent);
 
       SiteInfo siteInfo = objectMapper.readValue(record.value(), SiteInfo.class);
       siteInfo.setId(null);
+      siteInfo.setSiteId(siteId);
+      siteInfo.setTimestamp(timestamp);
       siteInfoService.saveSiteInfoIfChanged(siteInfo);
+
+      ack.acknowledge();
 
     } catch (Exception e) {
 
@@ -157,8 +168,6 @@ public class KafkaConsumerServiceImpl {
           Constants.BLUETOOTH_DATA_TOPIC_SITES, timestamp, siteId, e.getMessage(), e);
       s3Archiver.archiveFailedSiteEvents(timestamp, siteId, record.value());
 
-    } finally {
-      ack.acknowledge();
     }
   }
 

@@ -30,3 +30,8 @@ jar {
 bootJar {
     enabled = true
 }
+
+// Required for reflection
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << "-parameters"
+}
