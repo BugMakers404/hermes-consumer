@@ -2,11 +2,12 @@ package org.bugmakers404.hermes.consumer.vicroad.entities.routes;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.Serializable;
 
 @Slf4j
 @Data
@@ -15,21 +16,18 @@ import lombok.extern.slf4j.Slf4j;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RouteStats implements Serializable {
 
-  @JsonAlias("interval_start")
-  private String intervalStart;
+    @JsonAlias("travel_time")
+    private Integer travelTime;
 
-  @JsonAlias("travel_time")
-  private Integer travelTime;
+    private Integer delay;
 
-  private Integer delay;
+    private Integer speed;
 
-  private Integer speed;
+    @JsonAlias("excess_delay")
+    private Integer excessDelay;
 
-  @JsonAlias("excess_delay")
-  private Integer excessDelay;
+    @JsonAlias("data_status")
+    private String dataStatus;
 
-  @JsonAlias("data_status")
-  private String dataStatus;
-
-  private Integer length;
+    private Integer length;
 }

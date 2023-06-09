@@ -15,19 +15,19 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PersistentLinkInfoServiceImpl implements PersistentLinkInfoService {
 
-  @NonNull
-  private final LinkInfoDAO linkInfoDAO;
+    @NonNull
+    private final LinkInfoDAO linkInfoDAO;
 
-  @Override
-  public LinkInfo saveLinkInfoIfChanged(@NonNull LinkInfo linkGeoInfo) {
-      LinkInfo latestLinkInfo = linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(
-              linkGeoInfo.getLinkId());
+    @Override
+    public LinkInfo saveLinkInfoIfChanged(@NonNull LinkInfo linkGeoInfo) {
+        LinkInfo latestLinkInfo = linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(
+                linkGeoInfo.getLinkId());
 
-      if (latestLinkInfo == null || !latestLinkInfo.isSame(linkGeoInfo)) {
-          return linkInfoDAO.save(linkGeoInfo);
-      } else {
-          return latestLinkInfo;
-      }
-  }
+        if (latestLinkInfo == null || !latestLinkInfo.isSame(linkGeoInfo)) {
+            return linkInfoDAO.save(linkGeoInfo);
+        } else {
+            return latestLinkInfo;
+        }
+    }
 
 }

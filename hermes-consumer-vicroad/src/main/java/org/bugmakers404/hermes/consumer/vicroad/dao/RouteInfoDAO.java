@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface RouteInfoDAO extends MongoRepository<RouteInfo, String> {
 
-  RouteInfo findTopByRouteIdOrderByTimestampDesc(Integer routeId);
+    RouteInfo findTopByRouteIdOrderByTimestampDesc(Integer routeId);
 
 }

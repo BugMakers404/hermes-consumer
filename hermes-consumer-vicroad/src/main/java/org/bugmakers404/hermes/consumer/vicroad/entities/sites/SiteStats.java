@@ -2,11 +2,12 @@ package org.bugmakers404.hermes.consumer.vicroad.entities.sites;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.Serializable;
 
 @Slf4j
 @Data
@@ -14,9 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SiteStats implements Serializable {
-
-  @JsonAlias("interval_start")
-  private String intervalStart;
 
   @JsonAlias("probe_count")
   private Integer probeCount;

@@ -4,6 +4,6 @@ import org.bugmakers404.hermes.consumer.vicroad.entities.links.LinkInfo;
 
 public interface PersistentLinkInfoService {
 
-  LinkInfo saveLinkInfoIfChanged(LinkInfo linkInfo);
+    LinkInfo saveLinkInfoIfChanged(LinkInfo linkInfo);
 
 }

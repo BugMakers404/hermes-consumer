@@ -58,9 +58,7 @@ public class KafkaConsumerServiceImpl {
     try {
 
       LinkEvent linkEvent = objectMapper.readValue(record.value(), LinkEvent.class);
-      linkEvent.setId(record.key());
-      linkEvent.setLinkId(linkId);
-      linkEvent.setTimestamp(timestamp);
+      linkEvent.setId(null);
       linkEventService.saveLinkEvent(linkEvent);
 
     } catch (Exception e) {
@@ -87,12 +85,8 @@ public class KafkaConsumerServiceImpl {
     try {
 
       LinkInfo linkInfo = objectMapper.readValue(record.value(), LinkInfo.class);
-      linkInfo.setId(record.key());
-      linkInfo.setLinkId(linkId);
-      linkInfo.setTimestamp(timestamp);
-      System.out.println("1");
+      linkInfo.setId(null);
       linkInfoService.saveLinkInfoIfChanged(linkInfo);
-      System.out.println("2");
 
     } catch (Exception e) {
 
@@ -119,18 +113,11 @@ public class KafkaConsumerServiceImpl {
     try {
 
       RouteEvent routeEvent = objectMapper.readValue(record.value(), RouteEvent.class);
-      RouteInfo routeInfo = objectMapper.readValue(record.value(), RouteInfo.class);
-
-      routeEvent.setId(record.key());
-      routeInfo.setId(record.key());
-
-      routeEvent.setRouteId(routeId);
-      routeInfo.setRouteId(routeId);
-
-      routeEvent.setTimestamp(timestamp);
-      routeInfo.setTimestamp(timestamp);
-
+      routeEvent.setId(null);
       routeEventService.saveRouteEvent(routeEvent);
+
+      RouteInfo routeInfo = objectMapper.readValue(record.value(), RouteInfo.class);
+      routeInfo.setId(null);
       routeInfoService.saveRouteInfoIfChanged(routeInfo);
 
     } catch (Exception e) {
@@ -157,18 +144,11 @@ public class KafkaConsumerServiceImpl {
     try {
 
       SiteEvent siteEvent = objectMapper.readValue(record.value(), SiteEvent.class);
-      SiteInfo siteInfo = objectMapper.readValue(record.value(), SiteInfo.class);
-
-      siteEvent.setId(record.key());
-      siteInfo.setId(record.key());
-
-      siteEvent.setSiteId(siteId);
-      siteInfo.setSiteId(siteId);
-
-      siteEvent.setTimestamp(timestamp);
-      siteInfo.setTimestamp(timestamp);
-
+      siteEvent.setId(null);
       siteEventService.saveSiteEvent(siteEvent);
+
+      SiteInfo siteInfo = objectMapper.readValue(record.value(), SiteInfo.class);
+      siteInfo.setId(null);
       siteInfoService.saveSiteInfoIfChanged(siteInfo);
 
     } catch (Exception e) {

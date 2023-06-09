@@ -15,12 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PersistentSiteEventServiceImpl implements PersistentSiteEventService {
 
-  @NonNull
-  private final SiteEventDAO siteEventDAO;
+    @NonNull
+    private final SiteEventDAO siteEventDAO;
 
-  @Override
-  public SiteEvent saveSiteEvent(SiteEvent siteEvent) {
-    return siteEventDAO.save(siteEvent);
-  }
+    @Override
+    public SiteEvent saveSiteEvent(SiteEvent siteEvent) {
+        return siteEventDAO.save(siteEvent);
+    }
 
 }

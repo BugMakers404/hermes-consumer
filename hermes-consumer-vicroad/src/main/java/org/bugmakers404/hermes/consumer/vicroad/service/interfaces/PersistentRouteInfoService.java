@@ -4,6 +4,6 @@ import org.bugmakers404.hermes.consumer.vicroad.entities.routes.RouteInfo;
 
 public interface PersistentRouteInfoService {
 
-  RouteInfo saveRouteInfoIfChanged(RouteInfo routeInfo);
+    RouteInfo saveRouteInfoIfChanged(RouteInfo routeInfo);
 
 }

@@ -4,6 +4,6 @@ import org.bugmakers404.hermes.consumer.vicroad.entities.sites.SiteInfo;
 
 public interface PersistentSiteInfoService {
 
-  SiteInfo saveSiteInfoIfChanged(SiteInfo siteInfo);
+    SiteInfo saveSiteInfoIfChanged(SiteInfo siteInfo);
 
 }

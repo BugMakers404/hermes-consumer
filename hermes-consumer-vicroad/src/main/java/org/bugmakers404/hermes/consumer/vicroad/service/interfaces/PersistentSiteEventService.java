@@ -4,6 +4,6 @@ import org.bugmakers404.hermes.consumer.vicroad.entities.sites.SiteEvent;
 
 public interface PersistentSiteEventService {
 
-  SiteEvent saveSiteEvent(SiteEvent siteEvent);
+    SiteEvent saveSiteEvent(SiteEvent siteEvent);
 
 }
