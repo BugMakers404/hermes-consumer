@@ -1,5 +1,6 @@
 package org.bugmakers404.hermes.consumer.vicroad.service;
 
+import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +20,13 @@ public class PersistentLinkEventServiceImpl implements PersistentLinkEventServic
     private final LinkEventDAO linkEventDAO;
 
     @Override
-    public LinkEvent saveLinkEvent(LinkEvent linkEvent) {
+    public LinkEvent save(LinkEvent linkEvent) {
         return linkEventDAO.save(linkEvent);
+    }
+
+    @Override
+    public List<LinkEvent> saveAll(List<LinkEvent> events) {
+        return linkEventDAO.saveAll(events);
     }
 
 }

@@ -1,6 +1,11 @@
 package org.bugmakers404.hermes.consumer.vicroad.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +27,6 @@ import org.bugmakers404.hermes.consumer.vicroad.utils.Constants;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
-
-import java.time.OffsetDateTime;
 
 @Component
 @Slf4j
@@ -49,28 +52,42 @@ public class KafkaConsumerServiceImpl {
   @KafkaListener(topics = {Constants.BLUETOOTH_DATA_TOPIC_LINKS},
       clientIdPrefix = Constants.BLUETOOTH_DATA_TOPIC_LINKS,
       concurrency = Constants.KAFKA_PARTITION_COUNT)
-  public void persistLinkEvent(@NonNull ConsumerRecord<String, String> record, Acknowledgment ack) {
+  public void persistLinkEvent(@NonNull List<ConsumerRecord<String, String>> records,
+      Acknowledgment ack) {
 
-    String[] timestampAndLinkId = record.key().split("_");
-    OffsetDateTime timestamp = OffsetDateTime.parse(timestampAndLinkId[0]);
-    Integer linkId = Integer.parseInt(timestampAndLinkId[1]);
+    List<LinkEvent> linkEvents = new ArrayList<>();
+    Map<String, String> failedRecords = new HashMap<>();
 
-    try {
+    for (ConsumerRecord<String, String> record : records) {
+      String[] timestampAndLinkId = record.key().split("_");
+      OffsetDateTime timestamp = OffsetDateTime.parse(timestampAndLinkId[0]);
+      Integer linkId = Integer.parseInt(timestampAndLinkId[1]);
 
-      LinkEvent linkEvent = objectMapper.readValue(record.value(), LinkEvent.class);
-      linkEvent.setId(null);
-      linkEvent.setLinkId(linkId);
-      linkEvent.setTimestamp(timestamp);
-      linkEventService.saveLinkEvent(linkEvent);
-      ack.acknowledge();
-
-    } catch (Exception e) {
-
-      log.error("{} - Failed to persist the event with key {}-{}: {}",
-          Constants.BLUETOOTH_DATA_TOPIC_LINKS, timestamp, linkId, e.getMessage(), e);
-      s3Archiver.archiveFailedLinkEvents(timestamp, linkId, record.value());
-
+      try {
+        LinkEvent linkEvent = objectMapper.readValue(record.value(), LinkEvent.class);
+        linkEvent.setId(null);
+        linkEvent.setLinkId(linkId);
+        linkEvent.setTimestamp(timestamp);
+        linkEvents.add(linkEvent);
+      } catch (Exception e) {
+        failedRecords.put(record.key(), record.value());
+        log.error("{} - Failed to persist the event with key {}-{}: {}",
+            Constants.BLUETOOTH_DATA_TOPIC_LINKS, timestamp, linkId, e.getMessage(), e);
+      }
     }
+
+    linkEventService.saveAll(linkEvents);
+
+    // Archive all failed records
+    for (Map.Entry<String, String> failedRecord : failedRecords.entrySet()) {
+      String[] timestampAndLinkId = failedRecord.getKey().split("_");
+      OffsetDateTime timestamp = OffsetDateTime.parse(timestampAndLinkId[0]);
+      Integer linkId = Integer.parseInt(timestampAndLinkId[1]);
+      s3Archiver.archiveFailedLinkEvents(timestamp, linkId, failedRecord.getValue());
+    }
+
+    // Acknowledge the batch here
+    ack.acknowledge();
 
   }
 
