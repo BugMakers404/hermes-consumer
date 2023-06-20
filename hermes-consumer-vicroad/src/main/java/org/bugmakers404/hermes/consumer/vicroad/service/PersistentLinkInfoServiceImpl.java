@@ -1,5 +1,8 @@
 package org.bugmakers404.hermes.consumer.vicroad.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,15 +22,27 @@ public class PersistentLinkInfoServiceImpl implements PersistentLinkInfoService 
     private final LinkInfoDAO linkInfoDAO;
 
     @Override
-    public LinkInfo saveLinkInfoIfChanged(@NonNull LinkInfo linkGeoInfo) {
+    public LinkInfo save(LinkInfo event) {
         LinkInfo latestLinkInfo = linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(
-                linkGeoInfo.getLinkId());
+            event.getLinkId());
 
-        if (latestLinkInfo == null || !latestLinkInfo.isSame(linkGeoInfo)) {
-            return linkInfoDAO.save(linkGeoInfo);
+        if (latestLinkInfo == null || !latestLinkInfo.isSame(event)) {
+            return linkInfoDAO.save(event);
         } else {
             return latestLinkInfo;
         }
     }
 
+    @Override
+    public List<LinkInfo> saveAll(List<LinkInfo> events) {
+        List<LinkInfo> savedEvents = new ArrayList<>();
+        for (LinkInfo event : events) {
+            LinkInfo latestLinkInfo = linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(
+                event.getLinkId());
+            if (Objects.isNull(latestLinkInfo) || !latestLinkInfo.isSame(event)) {
+                savedEvents.add(event);
+            }
+        }
+        return linkInfoDAO.saveAll(savedEvents);
+    }
 }

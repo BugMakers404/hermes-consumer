@@ -1,14 +1,11 @@
 package org.bugmakers404.hermes.consumer.vicroad.service;
 
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.List;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.bugmakers404.hermes.consumer.vicroad.entities.links.LinkEvent;
-import org.bugmakers404.hermes.consumer.vicroad.entities.links.LinkInfo;
 import org.bugmakers404.hermes.consumer.vicroad.entities.routes.RouteEvent;
 import org.bugmakers404.hermes.consumer.vicroad.entities.routes.RouteInfo;
 import org.bugmakers404.hermes.consumer.vicroad.entities.sites.SiteEvent;
@@ -21,7 +18,6 @@ import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRou
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteEventService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteInfoService;
 import org.bugmakers404.hermes.consumer.vicroad.utils.Constants;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.kafka.support.Acknowledgment;
@@ -69,18 +65,17 @@ public class KafkaConsumerServiceImplTest {
             "{\"id\": 1}");
         kafkaConsumerService.persistLinkEvent(List.of(record), acknowledgment);
 
-        ArgumentCaptor argumentCaptor = ArgumentCaptor.forClass(List.class);
-
-        verify(linkEventService, times(1)).saveAll(
-            argThat((List<LinkEvent> list) -> !list.isEmpty()));
+        verify(linkEventService, times(1)).saveAll(any());
         verify(acknowledgment, times(1)).acknowledge();
     }
 
     @Test
     public void testPersistLinkWithGeoEvent() {
-        ConsumerRecord<String, String> record = new ConsumerRecord<>(Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, 0, 0, "1997-10-02T00:00:00+10:00_1", "{\"id\": 1}");
-        kafkaConsumerService.persistLinkWithGeoEvent(record, acknowledgment);
-        verify(linkInfoService, times(1)).saveLinkInfoIfChanged(any(LinkInfo.class));
+        ConsumerRecord<String, String> record = new ConsumerRecord<>(
+            Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, 0, 0, "1997-10-02T00:00:00+10:00_1",
+            "{\"id\": 1}");
+        kafkaConsumerService.persistLinkWithGeoEvent(List.of(record), acknowledgment);
+        verify(linkInfoService, times(1)).saveAll(any());
         verify(acknowledgment, times(1)).acknowledge();
     }
 

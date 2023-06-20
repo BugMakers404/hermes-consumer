@@ -94,29 +94,42 @@ public class KafkaConsumerServiceImpl {
   @KafkaListener(topics = {Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO},
       clientIdPrefix = Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO,
       concurrency = Constants.KAFKA_PARTITION_COUNT)
-  public void persistLinkWithGeoEvent(@NonNull ConsumerRecord<String, String> record,
+  public void persistLinkWithGeoEvent(@NonNull List<ConsumerRecord<String, String>> records,
       Acknowledgment ack) {
-    String[] timestampAndLinkId = record.key().split("_");
-    OffsetDateTime timestamp = OffsetDateTime.parse(timestampAndLinkId[0]);
-    Integer linkId = Integer.parseInt(timestampAndLinkId[1]);
 
-    try {
+    List<LinkInfo> linkInfos = new ArrayList<>();
+    Map<String, String> failedRecords = new HashMap<>();
 
-      LinkInfo linkInfo = objectMapper.readValue(record.value(), LinkInfo.class);
-      linkInfo.setId(null);
-      linkInfo.setLinkId(linkId);
-      linkInfo.setTimestamp(timestamp);
-      linkInfoService.saveLinkInfoIfChanged(linkInfo);
-      ack.acknowledge();
+    for (ConsumerRecord<String, String> record : records) {
+      String[] timestampAndLinkId = record.key().split("_");
+      OffsetDateTime timestamp = OffsetDateTime.parse(timestampAndLinkId[0]);
+      Integer linkId = Integer.parseInt(timestampAndLinkId[1]);
 
-    } catch (Exception e) {
-
-      log.error("{} - Failed to persist the event with key {}-{}: {}",
-          Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, timestamp, linkId, e.getMessage(), e);
-      s3Archiver.archiveFailedLinkWithGeoEvents(timestamp, linkId, record.value());
-
+      try {
+        LinkInfo linkInfo = objectMapper.readValue(record.value(), LinkInfo.class);
+        linkInfo.setId(null);
+        linkInfo.setLinkId(linkId);
+        linkInfo.setTimestamp(timestamp);
+        linkInfos.add(linkInfo);
+      } catch (Exception e) {
+        failedRecords.put(record.key(), record.value());
+        log.error("{} - Failed to persist the event with key {}-{}: {}",
+            Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, timestamp, linkId, e.getMessage(), e);
+      }
     }
 
+    linkInfoService.saveAll(linkInfos);
+
+    // Archive all failed records
+    for (Map.Entry<String, String> failedRecord : failedRecords.entrySet()) {
+      String[] timestampAndLinkId = failedRecord.getKey().split("_");
+      OffsetDateTime timestamp = OffsetDateTime.parse(timestampAndLinkId[0]);
+      Integer linkId = Integer.parseInt(timestampAndLinkId[1]);
+      s3Archiver.archiveFailedLinkWithGeoEvents(timestamp, linkId, failedRecord.getValue());
+    }
+
+    // Acknowledge the batch here
+    ack.acknowledge();
   }
 
   @KafkaListener(topics = {Constants.BLUETOOTH_DATA_TOPIC_ROUTES},
