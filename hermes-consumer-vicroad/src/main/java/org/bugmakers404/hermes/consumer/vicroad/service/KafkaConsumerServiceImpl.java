@@ -118,7 +118,7 @@ public class KafkaConsumerServiceImpl {
       }
     }
 
-    linkInfoService.saveAll(linkInfos);
+    linkInfoService.saveAllIfChanged(linkInfos);
 
     // Archive all failed records
     for (Map.Entry<String, String> failedRecord : failedRecords.entrySet()) {

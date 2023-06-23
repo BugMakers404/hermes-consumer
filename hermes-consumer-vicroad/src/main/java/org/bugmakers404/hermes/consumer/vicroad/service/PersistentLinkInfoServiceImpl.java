@@ -1,8 +1,8 @@
 package org.bugmakers404.hermes.consumer.vicroad.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,31 +18,36 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PersistentLinkInfoServiceImpl implements PersistentLinkInfoService {
 
-    @NonNull
-    private final LinkInfoDAO linkInfoDAO;
+  @NonNull
+  private final LinkInfoDAO linkInfoDAO;
 
-    @Override
-    public LinkInfo save(LinkInfo event) {
-        LinkInfo latestLinkInfo = linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(
-            event.getLinkId());
+  @Override
+  public LinkInfo save(LinkInfo linkInfo) {
+    return linkInfoDAO.save(linkInfo);
+  }
 
-        if (latestLinkInfo == null || !latestLinkInfo.isSame(event)) {
-            return linkInfoDAO.save(event);
-        } else {
-            return latestLinkInfo;
-        }
+  @Override
+  public List<LinkInfo> saveAll(List<LinkInfo> allLinkInfo) {
+    return linkInfoDAO.saveAll(allLinkInfo);
+  }
+
+  @Override
+  public LinkInfo saveIfChanged(LinkInfo linkInfo) {
+    LinkInfo latestLinkInfo = linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(linkInfo.getLinkId());
+
+    if (latestLinkInfo == null || !latestLinkInfo.isSame(linkInfo)) {
+      return linkInfoDAO.save(linkInfo);
+    } else {
+      return latestLinkInfo;
     }
+  }
 
-    @Override
-    public List<LinkInfo> saveAll(List<LinkInfo> events) {
-        List<LinkInfo> savedEvents = new ArrayList<>();
-        for (LinkInfo event : events) {
-            LinkInfo latestLinkInfo = linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(
-                event.getLinkId());
-            if (Objects.isNull(latestLinkInfo) || !latestLinkInfo.isSame(event)) {
-                savedEvents.add(event);
-            }
-        }
-        return linkInfoDAO.saveAll(savedEvents);
-    }
+  @Override
+  public List<LinkInfo> saveAllIfChanged(List<LinkInfo> allLinkInfo) {
+    List<LinkInfo> savedLinkInfo = allLinkInfo.stream().filter(event -> {
+      LinkInfo latestLinkInfo = linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(event.getLinkId());
+      return Objects.isNull(latestLinkInfo) || !latestLinkInfo.isSame(event);
+    }).collect(Collectors.toList());
+    return linkInfoDAO.saveAll(savedLinkInfo);
+  }
 }

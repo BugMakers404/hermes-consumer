@@ -75,7 +75,7 @@ public class KafkaConsumerServiceImplTest {
             Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, 0, 0, "1997-10-02T00:00:00+10:00_1",
             "{\"id\": 1}");
         kafkaConsumerService.persistLinkWithGeoEvent(List.of(record), acknowledgment);
-        verify(linkInfoService, times(1)).saveAll(any());
+        verify(linkInfoService, times(1)).saveAllIfChanged(any());
         verify(acknowledgment, times(1)).acknowledge();
     }
 

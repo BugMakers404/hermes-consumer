@@ -118,7 +118,7 @@ public class PersistentLinkInfoServiceTest {
 
     when(linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(any())).thenReturn(linkInfoInDB);
 
-    LinkInfo saveResult = linkInfoService.save(sameLinkInfo);
+    LinkInfo saveResult = linkInfoService.saveIfChanged(sameLinkInfo);
 
     verify(linkInfoDAO, times(0)).save(sameLinkInfo);
     assertEquals(linkInfoInDB, saveResult);
