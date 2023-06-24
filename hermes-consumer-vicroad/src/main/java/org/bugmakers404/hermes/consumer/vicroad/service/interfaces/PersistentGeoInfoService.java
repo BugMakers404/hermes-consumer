@@ -6,5 +6,5 @@ public interface PersistentGeoInfoService<T> extends BasicPersistentService<T> {
 
   T saveIfChanged(T infoEvent);
 
-  List<T> saveAllIfChanged(List<T> infoEvent);
+  List<T> saveAllIfChanged(List<T> allInfoEvents);
 }

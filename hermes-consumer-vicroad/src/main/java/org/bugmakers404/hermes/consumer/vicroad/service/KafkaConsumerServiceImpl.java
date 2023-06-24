@@ -51,10 +51,9 @@ public class KafkaConsumerServiceImpl {
 
   @KafkaListener(topics = {Constants.BLUETOOTH_DATA_TOPIC_LINKS},
       clientIdPrefix = Constants.BLUETOOTH_DATA_TOPIC_LINKS,
-      concurrency = Constants.KAFKA_PARTITION_COUNT)
+      concurrency = Constants.KAFKA_PARTITION_COUNT, batch = "true")
   public void persistLinkEvent(@NonNull List<ConsumerRecord<String, String>> records,
       Acknowledgment ack) {
-
     List<LinkEvent> linkEvents = new ArrayList<>();
     Map<String, String> failedRecords = new HashMap<>();
 
@@ -93,7 +92,7 @@ public class KafkaConsumerServiceImpl {
 
   @KafkaListener(topics = {Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO},
       clientIdPrefix = Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO,
-      concurrency = Constants.KAFKA_PARTITION_COUNT)
+      concurrency = Constants.KAFKA_PARTITION_COUNT, batch = "true")
   public void persistLinkWithGeoEvent(@NonNull List<ConsumerRecord<String, String>> records,
       Acknowledgment ack) {
 
