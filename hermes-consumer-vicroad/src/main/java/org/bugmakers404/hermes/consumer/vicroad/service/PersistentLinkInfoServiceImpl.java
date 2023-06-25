@@ -22,16 +22,6 @@ public class PersistentLinkInfoServiceImpl implements PersistentLinkInfoService 
   private final LinkInfoDAO linkInfoDAO;
 
   @Override
-  public LinkInfo save(LinkInfo linkInfo) {
-    return linkInfoDAO.save(linkInfo);
-  }
-
-  @Override
-  public List<LinkInfo> saveAll(List<LinkInfo> allLinkInfo) {
-    return linkInfoDAO.saveAll(allLinkInfo);
-  }
-
-  @Override
   public LinkInfo saveIfChanged(LinkInfo linkInfo) {
     LinkInfo latestLinkInfo = linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(linkInfo.getLinkId());
 

@@ -2,7 +2,7 @@ package org.bugmakers404.hermes.consumer.vicroad.service.interfaces;
 
 import java.util.List;
 
-public interface BasicPersistentService<T> {
+public interface PersistentEventService<T> {
 
   T save(T event);
 

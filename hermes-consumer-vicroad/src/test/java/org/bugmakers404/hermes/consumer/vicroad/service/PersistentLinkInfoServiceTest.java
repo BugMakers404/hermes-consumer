@@ -36,7 +36,7 @@ public class PersistentLinkInfoServiceTest {
     when(linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(anyInt())).thenReturn(null);
     when(linkInfoDAO.save(any(LinkInfo.class))).thenReturn(newLinkInfo);
 
-    LinkInfo saveResult = linkInfoService.save(newLinkInfo);
+    LinkInfo saveResult = linkInfoService.saveIfChanged(newLinkInfo);
 
     verify(linkInfoDAO, times(1)).save(newLinkInfo);
     assertEquals(newLinkInfo, saveResult);
@@ -53,7 +53,7 @@ public class PersistentLinkInfoServiceTest {
         null);
     when(linkInfoDAO.saveAll(events)).thenReturn(events);
 
-    List<LinkInfo> saveResult = linkInfoService.saveAll(events);
+    List<LinkInfo> saveResult = linkInfoService.saveAllIfChanged(events);
 
     verify(linkInfoDAO, times(1)).saveAll(events);
     assertEquals(events, saveResult);
@@ -85,7 +85,7 @@ public class PersistentLinkInfoServiceTest {
 
     when(linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(anyInt())).thenReturn(linkInfoInDB);
     when(linkInfoDAO.save(newLinkInfo)).thenReturn(newLinkInfo);
-    LinkInfo saveResult = linkInfoService.save(newLinkInfo);
+    LinkInfo saveResult = linkInfoService.saveIfChanged(newLinkInfo);
 
     verify(linkInfoDAO, times(1)).save(newLinkInfo);
     assertNotEquals(linkInfoInDB, saveResult);
