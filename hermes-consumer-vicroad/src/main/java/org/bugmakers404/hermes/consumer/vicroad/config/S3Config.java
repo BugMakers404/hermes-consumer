@@ -1,4 +1,4 @@
-package org.bugmakers404.hermes.consumer.vicroad.configs;
+package org.bugmakers404.hermes.consumer.vicroad.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

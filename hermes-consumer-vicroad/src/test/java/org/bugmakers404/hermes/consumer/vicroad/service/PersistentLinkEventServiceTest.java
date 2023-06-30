@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 import org.bugmakers404.hermes.consumer.vicroad.dao.LinkEventDAO;
-import org.bugmakers404.hermes.consumer.vicroad.entities.links.LinkEvent;
+import org.bugmakers404.hermes.consumer.vicroad.entity.links.LinkEvent;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkEventService;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

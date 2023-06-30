@@ -1,4 +1,4 @@
-package org.bugmakers404.hermes.consumer.vicroad.configs;
+package org.bugmakers404.hermes.consumer.vicroad.config;
 
 import java.util.Arrays;
 

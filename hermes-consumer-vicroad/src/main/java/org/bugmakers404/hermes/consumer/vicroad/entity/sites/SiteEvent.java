@@ -1,4 +1,4 @@
-package org.bugmakers404.hermes.consumer.vicroad.entities.routes;
+package org.bugmakers404.hermes.consumer.vicroad.entity.sites;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -20,15 +20,15 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Document(collection = "vicroad.bluetooth.route.events")
-@CompoundIndex(name = "routeId_timestamp_idx", def = "{'routeId': 1, 'timestamp': -1}")
-public class RouteEvent implements Serializable {
+@Document(collection = "vicroad.bluetooth.site.events")
+@CompoundIndex(name = "siteId_timestamp_idx", def = "{'siteId': 1, 'timestamp': -1}")
+public class SiteEvent implements Serializable {
 
   @Id
   private String id;
 
   @Indexed
-  private Integer routeId;
+  private Integer siteId;
 
   @Indexed
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
@@ -39,6 +39,5 @@ public class RouteEvent implements Serializable {
   private Boolean draft;
 
   @JsonAlias("latest_stats")
-  private RouteStats latestStats;
+  private SiteStats latestStats;
 }
-

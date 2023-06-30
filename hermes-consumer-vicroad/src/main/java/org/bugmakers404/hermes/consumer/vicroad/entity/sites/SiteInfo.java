@@ -1,4 +1,4 @@
-package org.bugmakers404.hermes.consumer.vicroad.entities.sites;
+package org.bugmakers404.hermes.consumer.vicroad.entity.sites;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

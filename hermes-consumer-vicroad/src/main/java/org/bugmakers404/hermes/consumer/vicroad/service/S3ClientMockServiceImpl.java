@@ -3,7 +3,7 @@ package org.bugmakers404.hermes.consumer.vicroad.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.FailedEventsArchiveService;
-import org.bugmakers404.hermes.consumer.vicroad.utils.Constants;
+import org.bugmakers404.hermes.consumer.vicroad.util.Constants;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 

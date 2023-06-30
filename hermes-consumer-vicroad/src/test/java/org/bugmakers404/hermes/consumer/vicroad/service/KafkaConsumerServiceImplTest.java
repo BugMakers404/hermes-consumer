@@ -6,10 +6,10 @@ import static org.mockito.Mockito.verify;
 
 import java.util.List;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.bugmakers404.hermes.consumer.vicroad.entities.routes.RouteEvent;
-import org.bugmakers404.hermes.consumer.vicroad.entities.routes.RouteInfo;
-import org.bugmakers404.hermes.consumer.vicroad.entities.sites.SiteEvent;
-import org.bugmakers404.hermes.consumer.vicroad.entities.sites.SiteInfo;
+import org.bugmakers404.hermes.consumer.vicroad.entity.routes.RouteEvent;
+import org.bugmakers404.hermes.consumer.vicroad.entity.routes.RouteInfo;
+import org.bugmakers404.hermes.consumer.vicroad.entity.sites.SiteEvent;
+import org.bugmakers404.hermes.consumer.vicroad.entity.sites.SiteInfo;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.FailedEventsArchiveService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkEventService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkInfoService;
@@ -17,7 +17,7 @@ import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRou
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteInfoService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteEventService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteInfoService;
-import org.bugmakers404.hermes.consumer.vicroad.utils.Constants;
+import org.bugmakers404.hermes.consumer.vicroad.util.Constants;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.kafka.support.Acknowledgment;

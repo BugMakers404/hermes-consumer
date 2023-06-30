@@ -10,7 +10,7 @@ import static org.testng.Assert.assertNotEquals;
 
 import java.util.List;
 import org.bugmakers404.hermes.consumer.vicroad.dao.LinkInfoDAO;
-import org.bugmakers404.hermes.consumer.vicroad.entities.links.LinkInfo;
+import org.bugmakers404.hermes.consumer.vicroad.entity.links.LinkInfo;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkInfoService;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 import org.bugmakers404.hermes.consumer.vicroad.dao.SiteEventDAO;
-import org.bugmakers404.hermes.consumer.vicroad.entities.sites.SiteEvent;
+import org.bugmakers404.hermes.consumer.vicroad.entity.sites.SiteEvent;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteEventService;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

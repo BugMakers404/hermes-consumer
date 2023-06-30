@@ -1,4 +1,4 @@
-package org.bugmakers404.hermes.consumer.vicroad.entities.links;
+package org.bugmakers404.hermes.consumer.vicroad.entity.links;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

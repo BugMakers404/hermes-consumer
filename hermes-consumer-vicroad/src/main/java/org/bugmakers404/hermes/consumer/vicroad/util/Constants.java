@@ -1,4 +1,4 @@
-package org.bugmakers404.hermes.consumer.vicroad.utils;
+package org.bugmakers404.hermes.consumer.vicroad.util;
 
 import java.time.format.DateTimeFormatter;
 
