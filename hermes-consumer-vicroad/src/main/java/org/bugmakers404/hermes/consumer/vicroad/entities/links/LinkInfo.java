@@ -26,57 +26,57 @@ import java.util.Objects;
 @CompoundIndex(name = "linkId_timestamp_idx", def = "{'linkId': 1, 'timestamp': -1}")
 public class LinkInfo implements Serializable {
 
-    @Id
-    private String id;
+  @Id
+  private String id;
 
-    @Indexed
-    private Integer linkId;
+  @Indexed
+  private Integer linkId;
 
-    @Indexed
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    private OffsetDateTime timestamp;
+  @Indexed
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+  private OffsetDateTime timestamp;
 
-    private String name;
+  private String name;
 
-    @JsonAlias("origin.id")
-    private Integer originId;
+  @JsonAlias("origin.id")
+  private Integer originId;
 
-    @JsonAlias("destination.id")
-    private Integer destinationId;
+  @JsonAlias("destination.id")
+  private Integer destinationId;
 
-    private Integer length;
+  private Integer length;
 
-    @JsonAlias("min_number_of_lanes")
-    private Integer minNumberOfLanes;
+  @JsonAlias("min_number_of_lanes")
+  private Integer minNumberOfLanes;
 
-    @JsonAlias("minimum_tt")
-    private Integer minTravelTime;
+  @JsonAlias("minimum_tt")
+  private Integer minTravelTime;
 
-    @JsonAlias("is_freeway")
-    private Boolean isFreeway;
+  @JsonAlias("is_freeway")
+  private Boolean isFreeway;
 
-    private String direction;
+  private String direction;
 
-    private List<List<Double>> coordinates;
+  private List<List<Double>> coordinates;
 
-    public Boolean isSame(LinkInfo other) {
-        if (this == other) {
-            return true;
-        }
-
-        if (other == null) {
-            return false;
-        }
-
-        return Objects.equals(name, other.name)
-                && Objects.equals(originId, other.originId)
-                && Objects.equals(destinationId, other.destinationId)
-                && Objects.equals(length, other.length)
-                && Objects.equals(minNumberOfLanes, other.minNumberOfLanes)
-                && Objects.equals(minTravelTime, other.minTravelTime)
-                && Objects.equals(isFreeway, other.isFreeway)
-                && Objects.equals(direction, other.direction)
-                && Objects.equals(coordinates, other.coordinates);
+  public Boolean isSame(LinkInfo other) {
+    if (this == other) {
+      return true;
     }
+
+    if (other == null) {
+      return false;
+    }
+
+    return Objects.equals(name, other.name)
+        && Objects.equals(originId, other.originId)
+        && Objects.equals(destinationId, other.destinationId)
+        && Objects.equals(length, other.length)
+        && Objects.equals(minNumberOfLanes, other.minNumberOfLanes)
+        && Objects.equals(minTravelTime, other.minTravelTime)
+        && Objects.equals(isFreeway, other.isFreeway)
+        && Objects.equals(direction, other.direction)
+        && Objects.equals(coordinates, other.coordinates);
+  }
 
 }

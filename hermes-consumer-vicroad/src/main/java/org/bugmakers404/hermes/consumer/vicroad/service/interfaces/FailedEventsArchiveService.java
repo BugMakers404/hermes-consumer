@@ -4,13 +4,13 @@ import java.time.OffsetDateTime;
 
 public interface FailedEventsArchiveService {
 
-    void archiveFailedLinkEvents(OffsetDateTime timestamp, Integer linkId, String linkEvent);
+  void archiveFailedLinkEvents(OffsetDateTime timestamp, Integer linkId, String linkEvent);
 
-    void archiveFailedLinkWithGeoEvents(OffsetDateTime timestamp, Integer linkId,
-                                        String linkWithGeoEvent);
+  void archiveFailedLinkWithGeoEvents(OffsetDateTime timestamp, Integer linkId,
+      String linkWithGeoEvent);
 
-    void archiveFailedRouteEvents(OffsetDateTime timestamp, Integer routeId, String routeEvent);
+  void archiveFailedRouteEvents(OffsetDateTime timestamp, Integer routeId, String routeEvent);
 
-    void archiveFailedSiteEvents(OffsetDateTime timestamp, Integer siteId, String siteEvent);
+  void archiveFailedSiteEvents(OffsetDateTime timestamp, Integer siteId, String siteEvent);
 
 }

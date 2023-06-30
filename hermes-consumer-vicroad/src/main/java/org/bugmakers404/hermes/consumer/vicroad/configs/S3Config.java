@@ -9,13 +9,13 @@ import software.amazon.awssdk.services.s3.S3Client;
 @Configuration
 public class S3Config {
 
-    ProfileCredentialsProvider profileCredentialsProvider = ProfileCredentialsProvider.create();
+  ProfileCredentialsProvider profileCredentialsProvider = ProfileCredentialsProvider.create();
 
-    @Bean
-    public S3Client s3Client() {
-        return S3Client.builder()
-                .credentialsProvider(profileCredentialsProvider)
-                .region(Region.AP_SOUTHEAST_2) // Replace with your desired region
-                .build();
-    }
+  @Bean
+  public S3Client s3Client() {
+    return S3Client.builder()
+        .credentialsProvider(profileCredentialsProvider)
+        .region(Region.AP_SOUTHEAST_2) // Replace with your desired region
+        .build();
+  }
 }

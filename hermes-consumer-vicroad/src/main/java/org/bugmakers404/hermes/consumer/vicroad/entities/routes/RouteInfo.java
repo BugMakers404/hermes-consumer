@@ -29,59 +29,59 @@ import java.util.Objects;
 @CompoundIndex(name = "routeId_timestamp_idx", def = "{'routeId': 1, 'timestamp': -1}")
 public class RouteInfo {
 
-    @Id
-    private String id;
+  @Id
+  private String id;
 
-    @Indexed
-    private Integer routeId;
+  @Indexed
+  private Integer routeId;
 
-    @Indexed
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    private OffsetDateTime timestamp;
+  @Indexed
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+  private OffsetDateTime timestamp;
 
-    private String name;
+  private String name;
 
-    @JsonAlias("primary_road_name")
-    private String primaryRoadName;
+  @JsonAlias("primary_road_name")
+  private String primaryRoadName;
 
-    @JsonAlias("start_end_description")
-    private String startEndDescription;
+  @JsonAlias("start_end_description")
+  private String startEndDescription;
 
-    private Integer length;
+  private Integer length;
 
-    private List<Integer> links;
+  private List<Integer> links;
 
-    @JsonSetter("links")
-    public void setLinks(JsonNode linksNode) {
-        this.links = new ArrayList<>();
+  @JsonSetter("links")
+  public void setLinks(JsonNode linksNode) {
+    this.links = new ArrayList<>();
 
-        for (JsonNode linkNode : linksNode) {
-            if (linkNode instanceof IntNode) {
-                this.links.add(linkNode.asInt());
-            } else {
-                this.links.add(linkNode.get("id").asInt());
-            }
-        }
+    for (JsonNode linkNode : linksNode) {
+      if (linkNode instanceof IntNode) {
+        this.links.add(linkNode.asInt());
+      } else {
+        this.links.add(linkNode.get("id").asInt());
+      }
+    }
+  }
+
+  public void setLinks(List<Integer> linkIds) {
+    this.links = linkIds;
+  }
+
+  public Boolean isSame(RouteInfo other) {
+    if (this == other) {
+      return true;
     }
 
-    public void setLinks(List<Integer> linkIds) {
-        this.links = linkIds;
+    if (other == null) {
+      return false;
     }
 
-    public Boolean isSame(RouteInfo other) {
-        if (this == other) {
-            return true;
-        }
-
-        if (other == null) {
-            return false;
-        }
-
-        return Objects.equals(name, other.name)
-                && Objects.equals(primaryRoadName, other.primaryRoadName)
-                && Objects.equals(startEndDescription, other.startEndDescription)
-                && Objects.equals(length, other.length)
-                && Objects.equals(links, other.links);
-    }
+    return Objects.equals(name, other.name)
+        && Objects.equals(primaryRoadName, other.primaryRoadName)
+        && Objects.equals(startEndDescription, other.startEndDescription)
+        && Objects.equals(length, other.length)
+        && Objects.equals(links, other.links);
+  }
 
 }

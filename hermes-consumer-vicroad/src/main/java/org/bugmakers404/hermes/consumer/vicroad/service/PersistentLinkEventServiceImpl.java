@@ -16,17 +16,17 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PersistentLinkEventServiceImpl implements PersistentLinkEventService {
 
-    @NonNull
-    private final LinkEventDAO linkEventDAO;
+  @NonNull
+  private final LinkEventDAO linkEventDAO;
 
-    @Override
-    public LinkEvent save(LinkEvent linkEvent) {
-        return linkEventDAO.save(linkEvent);
-    }
+  @Override
+  public LinkEvent save(LinkEvent linkEvent) {
+    return linkEventDAO.save(linkEvent);
+  }
 
-    @Override
-    public List<LinkEvent> saveAll(List<LinkEvent> events) {
-        return linkEventDAO.saveAll(events);
-    }
+  @Override
+  public List<LinkEvent> saveAll(List<LinkEvent> events) {
+    return linkEventDAO.saveAll(events);
+  }
 
 }

@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface SiteInfoDAO extends MongoRepository<SiteInfo, String> {
 
-    SiteInfo findTopBySiteIdOrderByTimestampDesc(Integer siteId);
+  SiteInfo findTopBySiteIdOrderByTimestampDesc(Integer siteId);
 
 }

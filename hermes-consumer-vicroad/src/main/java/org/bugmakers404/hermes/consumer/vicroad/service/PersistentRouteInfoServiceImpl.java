@@ -15,19 +15,19 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PersistentRouteInfoServiceImpl implements PersistentRouteInfoService {
 
-    @NonNull
-    private final RouteInfoDAO routeInfoDAO;
+  @NonNull
+  private final RouteInfoDAO routeInfoDAO;
 
-    @Override
-    public RouteInfo saveRouteInfoIfChanged(@NonNull RouteInfo routeInfo) {
-        RouteInfo latestRouteInfo = routeInfoDAO.findTopByRouteIdOrderByTimestampDesc(
-                routeInfo.getRouteId());
+  @Override
+  public RouteInfo saveRouteInfoIfChanged(@NonNull RouteInfo routeInfo) {
+    RouteInfo latestRouteInfo = routeInfoDAO.findTopByRouteIdOrderByTimestampDesc(
+        routeInfo.getRouteId());
 
-        if (latestRouteInfo == null || !latestRouteInfo.isSame(routeInfo)) {
-            return routeInfoDAO.save(routeInfo);
-        } else {
-            return latestRouteInfo;
-        }
+    if (latestRouteInfo == null || !latestRouteInfo.isSame(routeInfo)) {
+      return routeInfoDAO.save(routeInfo);
+    } else {
+      return latestRouteInfo;
     }
+  }
 
 }

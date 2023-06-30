@@ -16,25 +16,25 @@ import org.testng.annotations.Test;
 
 public class PersistentLinkEventServiceTest {
 
-    @Mock
-    private LinkEventDAO linkEventDAO;
+  @Mock
+  private LinkEventDAO linkEventDAO;
 
-    private PersistentLinkEventService linkEventService;
+  private PersistentLinkEventService linkEventService;
 
-    @BeforeMethod
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-        linkEventService = new PersistentLinkEventServiceImpl(linkEventDAO);
-    }
+  @BeforeMethod
+  public void setup() {
+    MockitoAnnotations.openMocks(this);
+    linkEventService = new PersistentLinkEventServiceImpl(linkEventDAO);
+  }
 
-    @Test
-    public void saveLinkEventTest() {
-        LinkEvent linkEvent = new LinkEvent();
+  @Test
+  public void saveLinkEventTest() {
+    LinkEvent linkEvent = new LinkEvent();
 
-        when(linkEventDAO.save(any(LinkEvent.class))).thenReturn(linkEvent);
-      LinkEvent result = linkEventService.save(linkEvent);
+    when(linkEventDAO.save(any(LinkEvent.class))).thenReturn(linkEvent);
+    LinkEvent result = linkEventService.save(linkEvent);
 
-        verify(linkEventDAO, times(1)).save(linkEvent);
-        assertEquals(linkEvent, result);
-    }
+    verify(linkEventDAO, times(1)).save(linkEvent);
+    assertEquals(linkEvent, result);
+  }
 }

@@ -16,32 +16,32 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LinkStats implements Serializable {
 
-    @JsonAlias("travel_time")
-    private Integer travelTime;
+  @JsonAlias("travel_time")
+  private Integer travelTime;
 
-    private Integer delay;
+  private Integer delay;
 
-    private Integer speed;
+  private Integer speed;
 
-    @JsonAlias("excess_delay")
-    private Integer excessDelay;
+  @JsonAlias("excess_delay")
+  private Integer excessDelay;
 
-    private Integer congestion;
+  private Integer congestion;
 
-    private Integer score;
+  private Integer score;
 
-    @JsonAlias("flow_restriction_score")
-    private Integer flowRestrictionScore;
+  @JsonAlias("flow_restriction_score")
+  private Integer flowRestrictionScore;
 
-    @JsonAlias("average_density")
-    private Integer averageDensity;
+  @JsonAlias("average_density")
+  private Integer averageDensity;
 
-    private Integer density;
+  private Integer density;
 
-    @JsonAlias("enough_data")
-    private Boolean enoughData;
+  @JsonAlias("enough_data")
+  private Boolean enoughData;
 
-    private Boolean ignored;
+  private Boolean ignored;
 
-    private Boolean closed;
+  private Boolean closed;
 }

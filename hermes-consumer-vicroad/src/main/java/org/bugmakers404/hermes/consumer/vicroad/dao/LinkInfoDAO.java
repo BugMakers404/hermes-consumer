@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface LinkInfoDAO extends MongoRepository<LinkInfo, String> {
 
-    LinkInfo findTopByLinkIdOrderByTimestampDesc(Integer linkId);
+  LinkInfo findTopByLinkIdOrderByTimestampDesc(Integer linkId);
 
 }

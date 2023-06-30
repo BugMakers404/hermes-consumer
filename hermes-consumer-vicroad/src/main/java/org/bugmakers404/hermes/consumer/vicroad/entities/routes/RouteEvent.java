@@ -24,21 +24,21 @@ import java.time.OffsetDateTime;
 @CompoundIndex(name = "routeId_timestamp_idx", def = "{'routeId': 1, 'timestamp': -1}")
 public class RouteEvent implements Serializable {
 
-    @Id
-    private String id;
+  @Id
+  private String id;
 
-    @Indexed
-    private Integer routeId;
+  @Indexed
+  private Integer routeId;
 
-    @Indexed
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    private OffsetDateTime timestamp;
+  @Indexed
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+  private OffsetDateTime timestamp;
 
-    private Boolean enabled;
+  private Boolean enabled;
 
-    private Boolean draft;
+  private Boolean draft;
 
-    @JsonAlias("latest_stats")
-    private RouteStats latestStats;
+  @JsonAlias("latest_stats")
+  private RouteStats latestStats;
 }
 

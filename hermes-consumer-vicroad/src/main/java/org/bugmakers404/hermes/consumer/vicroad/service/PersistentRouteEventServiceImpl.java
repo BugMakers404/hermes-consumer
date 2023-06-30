@@ -15,12 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PersistentRouteEventServiceImpl implements PersistentRouteEventService {
 
-    @NonNull
-    private final RouteEventDAO routeEventDAO;
+  @NonNull
+  private final RouteEventDAO routeEventDAO;
 
-    @Override
-    public RouteEvent saveRouteEvent(RouteEvent routeEvent) {
-        return routeEventDAO.save(routeEvent);
-    }
+  @Override
+  public RouteEvent saveRouteEvent(RouteEvent routeEvent) {
+    return routeEventDAO.save(routeEvent);
+  }
 
 }

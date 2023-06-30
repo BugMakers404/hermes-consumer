@@ -6,8 +6,8 @@ import org.springframework.core.convert.converter.Converter;
 
 public class OffsetDateTimeMongoReadConverter implements Converter<String, OffsetDateTime> {
 
-    @Override
-    public OffsetDateTime convert(String source) {
-        return OffsetDateTime.parse(source);
-    }
+  @Override
+  public OffsetDateTime convert(String source) {
+    return OffsetDateTime.parse(source);
+  }
 }

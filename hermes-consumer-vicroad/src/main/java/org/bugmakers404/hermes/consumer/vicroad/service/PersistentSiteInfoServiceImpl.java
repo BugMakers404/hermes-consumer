@@ -15,19 +15,19 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PersistentSiteInfoServiceImpl implements PersistentSiteInfoService {
 
-    @NonNull
-    private final SiteInfoDAO siteInfoDAO;
+  @NonNull
+  private final SiteInfoDAO siteInfoDAO;
 
-    @Override
-    public SiteInfo saveSiteInfoIfChanged(@NonNull SiteInfo siteInfo) {
-        SiteInfo latestSiteInfo = siteInfoDAO.findTopBySiteIdOrderByTimestampDesc(
-                siteInfo.getSiteId());
+  @Override
+  public SiteInfo saveSiteInfoIfChanged(@NonNull SiteInfo siteInfo) {
+    SiteInfo latestSiteInfo = siteInfoDAO.findTopBySiteIdOrderByTimestampDesc(
+        siteInfo.getSiteId());
 
-        if (latestSiteInfo == null || !latestSiteInfo.isSame(siteInfo)) {
-            return siteInfoDAO.save(siteInfo);
-        } else {
-            return latestSiteInfo;
-        }
+    if (latestSiteInfo == null || !latestSiteInfo.isSame(siteInfo)) {
+      return siteInfoDAO.save(siteInfo);
+    } else {
+      return latestSiteInfo;
     }
+  }
 
 }

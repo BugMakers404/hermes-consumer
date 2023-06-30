@@ -9,11 +9,11 @@ import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 @Configuration
 public class MongoConfig {
 
-    @Bean
-    public MongoCustomConversions customConversions() {
-        return new MongoCustomConversions(Arrays.asList(
-                new OffsetDateTimeMongoWriteConverter(),
-                new OffsetDateTimeMongoReadConverter()
-        ));
-    }
+  @Bean
+  public MongoCustomConversions customConversions() {
+    return new MongoCustomConversions(Arrays.asList(
+        new OffsetDateTimeMongoWriteConverter(),
+        new OffsetDateTimeMongoReadConverter()
+    ));
+  }
 }

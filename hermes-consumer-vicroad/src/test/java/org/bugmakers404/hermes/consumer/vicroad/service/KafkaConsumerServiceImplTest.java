@@ -26,74 +26,77 @@ import org.testng.annotations.Test;
 
 public class KafkaConsumerServiceImplTest {
 
-    @Mock
-    private PersistentLinkEventService linkEventService;
+  @Mock
+  private PersistentLinkEventService linkEventService;
 
-    @Mock
-    private PersistentLinkInfoService linkInfoService;
+  @Mock
+  private PersistentLinkInfoService linkInfoService;
 
-    @Mock
-    private PersistentRouteEventService routeEventService;
+  @Mock
+  private PersistentRouteEventService routeEventService;
 
-    @Mock
-    private PersistentRouteInfoService routeInfoService;
+  @Mock
+  private PersistentRouteInfoService routeInfoService;
 
-    @Mock
-    private PersistentSiteEventService siteEventService;
+  @Mock
+  private PersistentSiteEventService siteEventService;
 
-    @Mock
-    private PersistentSiteInfoService siteInfoService;
+  @Mock
+  private PersistentSiteInfoService siteInfoService;
 
-    @Mock
-    private FailedEventsArchiveService s3Archiver;
+  @Mock
+  private FailedEventsArchiveService s3Archiver;
 
-    @Mock
-    private Acknowledgment acknowledgment;
+  @Mock
+  private Acknowledgment acknowledgment;
 
-    private KafkaConsumerServiceImpl kafkaConsumerService;
+  private KafkaConsumerServiceImpl kafkaConsumerService;
 
-    @BeforeMethod
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-        kafkaConsumerService = new KafkaConsumerServiceImpl(linkEventService, linkInfoService, routeEventService, routeInfoService, siteEventService, siteInfoService, s3Archiver);
-    }
+  @BeforeMethod
+  public void setup() {
+    MockitoAnnotations.openMocks(this);
+    kafkaConsumerService = new KafkaConsumerServiceImpl(linkEventService, linkInfoService,
+        routeEventService, routeInfoService, siteEventService, siteInfoService, s3Archiver);
+  }
 
-    @Test
-    public void testPersistLinkEvent() {
-        ConsumerRecord<String, String> record = new ConsumerRecord<>(
-            Constants.BLUETOOTH_DATA_TOPIC_LINKS, 0, 0, "1997-10-02T00:00:00+10:00_1",
-            "{\"id\": 1}");
-        kafkaConsumerService.persistLinkEvent(List.of(record), acknowledgment);
+  @Test
+  public void testPersistLinkEvent() {
+    ConsumerRecord<String, String> record = new ConsumerRecord<>(
+        Constants.BLUETOOTH_DATA_TOPIC_LINKS, 0, 0, "1997-10-02T00:00:00+10:00_1",
+        "{\"id\": 1}");
+    kafkaConsumerService.persistLinkEvent(List.of(record), acknowledgment);
 
-        verify(linkEventService, times(1)).saveAll(any());
-        verify(acknowledgment, times(1)).acknowledge();
-    }
+    verify(linkEventService, times(1)).saveAll(any());
+    verify(acknowledgment, times(1)).acknowledge();
+  }
 
-    @Test
-    public void testPersistLinkWithGeoEvent() {
-        ConsumerRecord<String, String> record = new ConsumerRecord<>(
-            Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, 0, 0, "1997-10-02T00:00:00+10:00_1",
-            "{\"id\": 1}");
-        kafkaConsumerService.persistLinkWithGeoEvent(List.of(record), acknowledgment);
-        verify(linkInfoService, times(1)).saveAllIfChanged(any());
-        verify(acknowledgment, times(1)).acknowledge();
-    }
+  @Test
+  public void testPersistLinkWithGeoEvent() {
+    ConsumerRecord<String, String> record = new ConsumerRecord<>(
+        Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, 0, 0, "1997-10-02T00:00:00+10:00_1",
+        "{\"id\": 1}");
+    kafkaConsumerService.persistLinkWithGeoEvent(List.of(record), acknowledgment);
+    verify(linkInfoService, times(1)).saveAllIfChanged(any());
+    verify(acknowledgment, times(1)).acknowledge();
+  }
 
-    @Test
-    public void testPersistRouteEvent() {
-        ConsumerRecord<String, String> record = new ConsumerRecord<>(Constants.BLUETOOTH_DATA_TOPIC_ROUTES, 0, 0, "1997-10-02T00:00:00+10:00_1", "{\"id\": 1}");
-        kafkaConsumerService.persistRouteEvent(record, acknowledgment);
-        verify(routeEventService, times(1)).saveRouteEvent(any(RouteEvent.class));
-        verify(routeInfoService, times(1)).saveRouteInfoIfChanged(any(RouteInfo.class));
-        verify(acknowledgment, times(1)).acknowledge();
-    }
+  @Test
+  public void testPersistRouteEvent() {
+    ConsumerRecord<String, String> record = new ConsumerRecord<>(
+        Constants.BLUETOOTH_DATA_TOPIC_ROUTES, 0, 0, "1997-10-02T00:00:00+10:00_1", "{\"id\": 1}");
+    kafkaConsumerService.persistRouteEvent(record, acknowledgment);
+    verify(routeEventService, times(1)).saveRouteEvent(any(RouteEvent.class));
+    verify(routeInfoService, times(1)).saveRouteInfoIfChanged(any(RouteInfo.class));
+    verify(acknowledgment, times(1)).acknowledge();
+  }
 
-    @Test
-    public void testPersistSiteEvent() {
-        ConsumerRecord<String, String> record = new ConsumerRecord<>(Constants.BLUETOOTH_DATA_TOPIC_SITES, 0, 0, "1997-10-02T00:00:00+10:00_1", "{\"id\": 1}");
-        kafkaConsumerService.persistSiteEvent(record, acknowledgment);
-        verify(siteEventService, times(1)).saveSiteEvent(any(SiteEvent.class));
-        verify(siteInfoService, times(1)).saveSiteInfoIfChanged(any(SiteInfo.class));
-        verify(acknowledgment, times(1)).acknowledge();
-    }
+  @Test
+  public void testPersistSiteEvent() {
+    ConsumerRecord<String, String> record = new ConsumerRecord<>(
+        Constants.BLUETOOTH_DATA_TOPIC_SITES, 0, 0, "1997-10-02T00:00:00+10:00_1", "{\"id\": 1}");
+    kafkaConsumerService.persistSiteEvent(record, acknowledgment);
+    verify(siteEventService, times(1)).saveSiteEvent(any(SiteEvent.class));
+    verify(siteInfoService, times(1)).saveSiteInfoIfChanged(any(SiteInfo.class));
+    verify(acknowledgment, times(1)).acknowledge();
+  }
 }

@@ -24,30 +24,29 @@ import java.util.Objects;
 @CompoundIndex(name = "siteId_timestamp_idx", def = "{'siteId': 1, 'timestamp': -1}")
 public class SiteInfo {
 
-    @Id
-    private String id;
+  @Id
+  private String id;
 
-    @Indexed
-    private Integer siteId;
+  @Indexed
+  private Integer siteId;
 
-    @Indexed
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    private OffsetDateTime timestamp;
+  @Indexed
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+  private OffsetDateTime timestamp;
 
-    private String name;
+  private String name;
 
-    private List<Double> location;
+  private List<Double> location;
 
-    public Boolean isSame(SiteInfo other) {
-        if (this == other) {
-            return true;
-        }
-
-        if (other == null) {
-            return false;
-        }
-
-        return Objects.equals(name, other.name)
-                && Objects.equals(location, other.location);
+  public Boolean isSame(SiteInfo other) {
+    if (this == other) {
+      return true;
     }
+
+    if (other == null) {
+      return false;
+    }
+
+    return Objects.equals(name, other.name) && Objects.equals(location, other.location);
+  }
 }

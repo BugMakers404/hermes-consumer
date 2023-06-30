@@ -15,28 +15,30 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Slf4j
 public class AsyncConfig implements AsyncConfigurer {
 
-    @Value("${hermes.consumer.thread.maxpoolsize:2}")
-    Integer poolSize;
+  @Value("${hermes.consumer.thread.maxpoolsize:2}")
+  Integer poolSize;
 
-    @Override
-    @Bean
-    public AsyncTaskExecutor getAsyncExecutor() {
-        ThreadPoolTaskExecutor pool = new ThreadPoolTaskExecutor();
-        if (poolSize <= 0) {
-            throw new IllegalArgumentException("The value of hermes.consumer.thread.maxpoolsize must be greater than 0");
-        }
-        pool.setCorePoolSize(poolSize / 2);
-        pool.setMaxPoolSize(poolSize);
-        pool.setThreadNamePrefix("HCExec-");
-        pool.setThreadPriority(Thread.NORM_PRIORITY);
-        pool.initialize();
-        return pool;
+  @Override
+  @Bean
+  public AsyncTaskExecutor getAsyncExecutor() {
+    ThreadPoolTaskExecutor pool = new ThreadPoolTaskExecutor();
+    if (poolSize <= 0) {
+      throw new IllegalArgumentException(
+          "The value of hermes.consumer.thread.maxpoolsize must be greater than 0");
     }
+    pool.setCorePoolSize(poolSize / 2);
+    pool.setMaxPoolSize(poolSize);
+    pool.setThreadNamePrefix("HCExec-");
+    pool.setThreadPriority(Thread.NORM_PRIORITY);
+    pool.initialize();
+    return pool;
+  }
 
-    @Override
-    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return (ex, method, params) -> log.error("Async method {} threw an exception: {}", method.getName(),
-                ex.getMessage(), ex);
-    }
+  @Override
+  public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+    return (ex, method, params) -> log.error("Async method {} threw an exception: {}",
+        method.getName(),
+        ex.getMessage(), ex);
+  }
 }
 
