@@ -32,7 +32,7 @@ public class PersistentRouteEventServiceTest {
     RouteEvent routeEvent = new RouteEvent();
     when(routeEventDAO.save(any(RouteEvent.class))).thenReturn(routeEvent);
 
-    RouteEvent result = routeEventService.saveRouteEvent(routeEvent);
+    RouteEvent result = routeEventService.save(routeEvent);
 
     verify(routeEventDAO, times(1)).save(routeEvent);
     assertEquals(routeEvent, result);

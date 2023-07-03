@@ -48,11 +48,13 @@ public class S3ClientServiceImplTest {
     OffsetDateTime timestamp = OffsetDateTime.now();
     Integer linkId = 1234;
     String linkEvent = "linkEvent";
-    String filePath = Constants.LINKS_FILE_PATH.formatted(
+    String filePath = Constants.BLUETOOTH_DATA_ARCHIVES_EVENT_PATH.formatted(
+        Constants.BLUETOOTH_DATA_TOPIC_LINKS,
         timestamp.format(Constants.DATE_TIME_FORMATTER_FOR_FILENAME), linkId);
 
     // When no exception thrown by S3Client
-    s3ClientService.archiveFailedLinkEvents(timestamp, linkId, linkEvent);
+    s3ClientService.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_LINKS, timestamp, linkId,
+        linkEvent);
 
     // Verify
     verify(s3Client, times(1)).putObject(any(PutObjectRequest.class), any(RequestBody.class));
@@ -60,7 +62,8 @@ public class S3ClientServiceImplTest {
     // When exception thrown by S3Client
     doThrow(new RuntimeException("S3 error")).when(s3Client)
         .putObject(any(PutObjectRequest.class), any(RequestBody.class));
-    s3ClientService.archiveFailedLinkEvents(timestamp, linkId, linkEvent);
+    s3ClientService.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_LINKS, timestamp, linkId,
+        linkEvent);
 
     // Verify that file is written locally in case of S3 error
     Path localFilePath = Paths.get(filePath);
@@ -77,11 +80,13 @@ public class S3ClientServiceImplTest {
     OffsetDateTime timestamp = OffsetDateTime.now();
     Integer linkId = 1234;
     String linkWithGeoEvent = "linkWithGeoEvent";
-    String filePath = Constants.LINKS_WITH_GEO_FILE_PATH.formatted(
+    String filePath = Constants.BLUETOOTH_DATA_ARCHIVES_EVENT_PATH.formatted(
+        Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO,
         timestamp.format(Constants.DATE_TIME_FORMATTER_FOR_FILENAME), linkId);
 
     // When no exception thrown by S3Client
-    s3ClientService.archiveFailedLinkWithGeoEvents(timestamp, linkId, linkWithGeoEvent);
+    s3ClientService.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, timestamp,
+        linkId, linkWithGeoEvent);
 
     // Verify
     verify(s3Client, times(1)).putObject(any(PutObjectRequest.class), any(RequestBody.class));
@@ -89,7 +94,8 @@ public class S3ClientServiceImplTest {
     // When exception thrown by S3Client
     doThrow(new RuntimeException("S3 error")).when(s3Client)
         .putObject(any(PutObjectRequest.class), any(RequestBody.class));
-    s3ClientService.archiveFailedLinkWithGeoEvents(timestamp, linkId, linkWithGeoEvent);
+    s3ClientService.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, timestamp,
+        linkId, linkWithGeoEvent);
 
     // Verify that file is written locally in case of S3 error
     Path localFilePath = Paths.get(filePath);
@@ -106,11 +112,13 @@ public class S3ClientServiceImplTest {
     OffsetDateTime timestamp = OffsetDateTime.now();
     Integer routeId = 1234;
     String routeEvent = "routeEvent";
-    String filePath = Constants.ROUTES_FILE_PATH.formatted(
+    String filePath = Constants.BLUETOOTH_DATA_ARCHIVES_EVENT_PATH.formatted(
+        Constants.BLUETOOTH_DATA_TOPIC_ROUTES,
         timestamp.format(Constants.DATE_TIME_FORMATTER_FOR_FILENAME), routeId);
 
     // When no exception thrown by S3Client
-    s3ClientService.archiveFailedRouteEvents(timestamp, routeId, routeEvent);
+    s3ClientService.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_ROUTES, timestamp, routeId,
+        routeEvent);
 
     // Verify
     verify(s3Client, times(1)).putObject(any(PutObjectRequest.class), any(RequestBody.class));
@@ -118,7 +126,8 @@ public class S3ClientServiceImplTest {
     // When exception thrown by S3Client
     doThrow(new RuntimeException("S3 error")).when(s3Client)
         .putObject(any(PutObjectRequest.class), any(RequestBody.class));
-    s3ClientService.archiveFailedRouteEvents(timestamp, routeId, routeEvent);
+    s3ClientService.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_ROUTES, timestamp, routeId,
+        routeEvent);
 
     // Verify that file is written locally in case of S3 error
     Path localFilePath = Paths.get(filePath);
@@ -135,11 +144,13 @@ public class S3ClientServiceImplTest {
     OffsetDateTime timestamp = OffsetDateTime.now();
     Integer siteId = 1234;
     String siteEvent = "siteEvent";
-    String filePath = Constants.SITES_FILE_PATH.formatted(
+    String filePath = Constants.BLUETOOTH_DATA_ARCHIVES_EVENT_PATH.formatted(
+        Constants.BLUETOOTH_DATA_TOPIC_SITES,
         timestamp.format(Constants.DATE_TIME_FORMATTER_FOR_FILENAME), siteId);
 
     // When no exception thrown by S3Client
-    s3ClientService.archiveFailedSiteEvents(timestamp, siteId, siteEvent);
+    s3ClientService.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_SITES, timestamp, siteId,
+        siteEvent);
 
     // Verify
     verify(s3Client, times(1)).putObject(any(PutObjectRequest.class), any(RequestBody.class));
@@ -147,7 +158,8 @@ public class S3ClientServiceImplTest {
     // When exception thrown by S3Client
     doThrow(new RuntimeException("S3 error")).when(s3Client)
         .putObject(any(PutObjectRequest.class), any(RequestBody.class));
-    s3ClientService.archiveFailedSiteEvents(timestamp, siteId, siteEvent);
+    s3ClientService.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_SITES, timestamp, siteId,
+        siteEvent);
 
     // Verify that file is written locally in case of S3 error
     Path localFilePath = Paths.get(filePath);

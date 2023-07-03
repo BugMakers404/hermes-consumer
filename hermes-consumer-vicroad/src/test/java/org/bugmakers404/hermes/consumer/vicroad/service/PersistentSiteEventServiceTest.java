@@ -32,7 +32,7 @@ public class PersistentSiteEventServiceTest {
     SiteEvent siteEvent = new SiteEvent();
     when(siteEventDAO.save(any(SiteEvent.class))).thenReturn(siteEvent);
 
-    SiteEvent result = siteEventService.saveSiteEvent(siteEvent);
+    SiteEvent result = siteEventService.save(siteEvent);
 
     verify(siteEventDAO, times(1)).save(siteEvent);
     assertEquals(siteEvent, result);

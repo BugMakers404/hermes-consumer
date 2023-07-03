@@ -6,10 +6,6 @@ import static org.mockito.Mockito.verify;
 
 import java.util.List;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.bugmakers404.hermes.consumer.vicroad.entity.routes.RouteEvent;
-import org.bugmakers404.hermes.consumer.vicroad.entity.routes.RouteInfo;
-import org.bugmakers404.hermes.consumer.vicroad.entity.sites.SiteEvent;
-import org.bugmakers404.hermes.consumer.vicroad.entity.sites.SiteInfo;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.FailedEventsArchiveService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkEventService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkInfoService;
@@ -60,33 +56,41 @@ public class KafkaConsumerServiceImplTest {
   }
 
   @Test
-  public void testPersistLinkEvent() {
+  public void testPersistLinkEvents() {
     ConsumerRecord<String, String> record = new ConsumerRecord<>(
         Constants.BLUETOOTH_DATA_TOPIC_LINKS, 0, 0, "1997-10-02T00:00:00+10:00_1",
         "{\"id\": 1}");
-    kafkaConsumerService.persistLinkEvent(List.of(record), acknowledgment);
+    kafkaConsumerService.persistLinkEvents(List.of(record), acknowledgment);
 
     verify(linkEventService, times(1)).saveAll(any());
     verify(acknowledgment, times(1)).acknowledge();
   }
 
   @Test
-  public void testPersistLinkWithGeoEvent() {
+  public void testPersistLinkWithGeoEvents() {
     ConsumerRecord<String, String> record = new ConsumerRecord<>(
         Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, 0, 0, "1997-10-02T00:00:00+10:00_1",
         "{\"id\": 1}");
-    kafkaConsumerService.persistLinkWithGeoEvent(List.of(record), acknowledgment);
+    kafkaConsumerService.persistLinkWithGeoEvents(List.of(record), acknowledgment);
     verify(linkInfoService, times(1)).saveAllIfChanged(any());
     verify(acknowledgment, times(1)).acknowledge();
   }
 
   @Test
-  public void testPersistRouteEvent() {
+  public void testPersistRouteEvents() {
     ConsumerRecord<String, String> record = new ConsumerRecord<>(
         Constants.BLUETOOTH_DATA_TOPIC_ROUTES, 0, 0, "1997-10-02T00:00:00+10:00_1", "{\"id\": 1}");
-    kafkaConsumerService.persistRouteEvent(record, acknowledgment);
-    verify(routeEventService, times(1)).saveRouteEvent(any(RouteEvent.class));
-    verify(routeInfoService, times(1)).saveRouteInfoIfChanged(any(RouteInfo.class));
+    kafkaConsumerService.persistRouteEvents(List.of(record), acknowledgment);
+    verify(routeEventService, times(1)).saveAll(any());
+    verify(acknowledgment, times(1)).acknowledge();
+  }
+
+  @Test
+  public void testPersistRouteWithGeoEvents() {
+    ConsumerRecord<String, String> record = new ConsumerRecord<>(
+        Constants.BLUETOOTH_DATA_TOPIC_ROUTES, 0, 0, "1997-10-02T00:00:00+10:00_1", "{\"id\": 1}");
+    kafkaConsumerService.persistRouteWithGeoEvents(List.of(record), acknowledgment);
+    verify(routeInfoService, times(1)).saveAllIfChanged(any());
     verify(acknowledgment, times(1)).acknowledge();
   }
 
@@ -94,9 +98,17 @@ public class KafkaConsumerServiceImplTest {
   public void testPersistSiteEvent() {
     ConsumerRecord<String, String> record = new ConsumerRecord<>(
         Constants.BLUETOOTH_DATA_TOPIC_SITES, 0, 0, "1997-10-02T00:00:00+10:00_1", "{\"id\": 1}");
-    kafkaConsumerService.persistSiteEvent(record, acknowledgment);
-    verify(siteEventService, times(1)).saveSiteEvent(any(SiteEvent.class));
-    verify(siteInfoService, times(1)).saveSiteInfoIfChanged(any(SiteInfo.class));
+    kafkaConsumerService.persistSiteEvents(List.of(record), acknowledgment);
+    verify(siteEventService, times(1)).saveAll(any());
+    verify(acknowledgment, times(1)).acknowledge();
+  }
+
+  @Test
+  public void testPersistSiteWithGeoEvents() {
+    ConsumerRecord<String, String> record = new ConsumerRecord<>(
+        Constants.BLUETOOTH_DATA_TOPIC_SITES, 0, 0, "1997-10-02T00:00:00+10:00_1", "{\"id\": 1}");
+    kafkaConsumerService.persistSiteWithGeoEvents(List.of(record), acknowledgment);
+    verify(siteInfoService, times(1)).saveAllIfChanged(any());
     verify(acknowledgment, times(1)).acknowledge();
   }
 }

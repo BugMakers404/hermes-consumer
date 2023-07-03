@@ -36,7 +36,7 @@ public class PersistentSiteInfoServiceTest {
     when(siteInfoDAO.findTopBySiteIdOrderByTimestampDesc(anyInt())).thenReturn(null);
     when(siteInfoDAO.save(any(SiteInfo.class))).thenReturn(newSiteInfo);
 
-    SiteInfo saveResult = siteInfoService.saveSiteInfoIfChanged(newSiteInfo);
+    SiteInfo saveResult = siteInfoService.saveIfChanged(newSiteInfo);
 
     verify(siteInfoDAO, times(1)).save(newSiteInfo);
     assertEquals(newSiteInfo, saveResult);
@@ -54,7 +54,7 @@ public class PersistentSiteInfoServiceTest {
 
     when(siteInfoDAO.findTopBySiteIdOrderByTimestampDesc(any())).thenReturn(siteInfoInDB);
     when(siteInfoDAO.save(newSiteInfo)).thenReturn(newSiteInfo);
-    SiteInfo saveResult = siteInfoService.saveSiteInfoIfChanged(newSiteInfo);
+    SiteInfo saveResult = siteInfoService.saveIfChanged(newSiteInfo);
 
     verify(siteInfoDAO, times(1)).save(newSiteInfo);
     assertNotEquals(siteInfoInDB, saveResult);
@@ -72,7 +72,7 @@ public class PersistentSiteInfoServiceTest {
     sameSiteInfo.setLocation(List.of(1d, 2d));
 
     when(siteInfoDAO.findTopBySiteIdOrderByTimestampDesc(any())).thenReturn(siteInfoInDB);
-    SiteInfo saveResult = siteInfoService.saveSiteInfoIfChanged(sameSiteInfo);
+    SiteInfo saveResult = siteInfoService.saveIfChanged(sameSiteInfo);
 
     verify(siteInfoDAO, times(0)).save(sameSiteInfo);
     assertEquals(siteInfoInDB, saveResult);

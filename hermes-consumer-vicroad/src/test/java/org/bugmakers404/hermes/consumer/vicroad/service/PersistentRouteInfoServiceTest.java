@@ -36,7 +36,7 @@ public class PersistentRouteInfoServiceTest {
     when(routeInfoDAO.findTopByRouteIdOrderByTimestampDesc(anyInt())).thenReturn(null);
     when(routeInfoDAO.save(any(RouteInfo.class))).thenReturn(newRouteInfo);
 
-    RouteInfo saveResult = routeInfoService.saveRouteInfoIfChanged(newRouteInfo);
+    RouteInfo saveResult = routeInfoService.saveIfChanged(newRouteInfo);
 
     verify(routeInfoDAO, times(1)).save(newRouteInfo);
     assertEquals(newRouteInfo, saveResult);
@@ -60,7 +60,7 @@ public class PersistentRouteInfoServiceTest {
 
     when(routeInfoDAO.findTopByRouteIdOrderByTimestampDesc(any())).thenReturn(routeInfoInDB);
     when(routeInfoDAO.save(newRouteInfo)).thenReturn(newRouteInfo);
-    RouteInfo saveResult = routeInfoService.saveRouteInfoIfChanged(newRouteInfo);
+    RouteInfo saveResult = routeInfoService.saveIfChanged(newRouteInfo);
 
     verify(routeInfoDAO, times(1)).save(newRouteInfo);
     assertNotEquals(routeInfoInDB, saveResult);
@@ -85,7 +85,7 @@ public class PersistentRouteInfoServiceTest {
     sameRouteInfo.setLinks(List.of(1, 2, 3));
 
     when(routeInfoDAO.findTopByRouteIdOrderByTimestampDesc(any())).thenReturn(routeInfoInDB);
-    RouteInfo saveResult = routeInfoService.saveRouteInfoIfChanged(sameRouteInfo);
+    RouteInfo saveResult = routeInfoService.saveIfChanged(sameRouteInfo);
 
     verify(routeInfoDAO, times(0)).save(sameRouteInfo);
     assertEquals(routeInfoInDB, saveResult);
