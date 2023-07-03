@@ -1,5 +1,8 @@
 package org.bugmakers404.hermes.consumer.vicroad.service;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,15 +22,24 @@ public class PersistentSiteInfoServiceImpl implements PersistentSiteInfoService 
   private final SiteInfoDAO siteInfoDAO;
 
   @Override
-  public SiteInfo saveSiteInfoIfChanged(@NonNull SiteInfo siteInfo) {
+  public SiteInfo saveIfChanged(SiteInfo infoEvent) {
     SiteInfo latestSiteInfo = siteInfoDAO.findTopBySiteIdOrderByTimestampDesc(
-        siteInfo.getSiteId());
+        infoEvent.getSiteId());
 
-    if (latestSiteInfo == null || !latestSiteInfo.isSame(siteInfo)) {
-      return siteInfoDAO.save(siteInfo);
+    if (latestSiteInfo == null || !latestSiteInfo.isSame(infoEvent)) {
+      return siteInfoDAO.save(infoEvent);
     } else {
       return latestSiteInfo;
     }
   }
 
+  @Override
+  public List<SiteInfo> saveAllIfChanged(List<SiteInfo> allInfoEvents) {
+    List<SiteInfo> savedSiteInfo = allInfoEvents.stream().filter(siteInfo -> {
+      SiteInfo latestSiteInfo = siteInfoDAO.findTopBySiteIdOrderByTimestampDesc(
+          siteInfo.getSiteId());
+      return Objects.isNull(latestSiteInfo) || !latestSiteInfo.isSame(siteInfo);
+    }).collect(Collectors.toList());
+    return siteInfoDAO.saveAll(savedSiteInfo);
+  }
 }

@@ -1,5 +1,8 @@
 package org.bugmakers404.hermes.consumer.vicroad.service;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,15 +22,24 @@ public class PersistentRouteInfoServiceImpl implements PersistentRouteInfoServic
   private final RouteInfoDAO routeInfoDAO;
 
   @Override
-  public RouteInfo saveRouteInfoIfChanged(@NonNull RouteInfo routeInfo) {
+  public RouteInfo saveIfChanged(RouteInfo infoEvent) {
     RouteInfo latestRouteInfo = routeInfoDAO.findTopByRouteIdOrderByTimestampDesc(
-        routeInfo.getRouteId());
+        infoEvent.getRouteId());
 
-    if (latestRouteInfo == null || !latestRouteInfo.isSame(routeInfo)) {
-      return routeInfoDAO.save(routeInfo);
+    if (latestRouteInfo == null || !latestRouteInfo.isSame(infoEvent)) {
+      return routeInfoDAO.save(infoEvent);
     } else {
       return latestRouteInfo;
     }
   }
 
+  @Override
+  public List<RouteInfo> saveAllIfChanged(List<RouteInfo> allInfoEvents) {
+    List<RouteInfo> savedRouteInfo = allInfoEvents.stream().filter(routeInfo -> {
+      RouteInfo latestRouteInfo = routeInfoDAO.findTopByRouteIdOrderByTimestampDesc(
+          routeInfo.getRouteId());
+      return Objects.isNull(latestRouteInfo) || !latestRouteInfo.isSame(routeInfo);
+    }).collect(Collectors.toList());
+    return routeInfoDAO.saveAll(savedRouteInfo);
+  }
 }

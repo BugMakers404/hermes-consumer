@@ -1,5 +1,6 @@
 package org.bugmakers404.hermes.consumer.vicroad.service;
 
+import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +20,12 @@ public class PersistentRouteEventServiceImpl implements PersistentRouteEventServ
   private final RouteEventDAO routeEventDAO;
 
   @Override
-  public RouteEvent saveRouteEvent(RouteEvent routeEvent) {
-    return routeEventDAO.save(routeEvent);
+  public RouteEvent save(RouteEvent event) {
+    return routeEventDAO.save(event);
   }
 
+  @Override
+  public List<RouteEvent> saveAll(List<RouteEvent> events) {
+    return routeEventDAO.saveAll(events);
+  }
 }

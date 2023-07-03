@@ -20,8 +20,8 @@ public class PersistentLinkEventServiceImpl implements PersistentLinkEventServic
   private final LinkEventDAO linkEventDAO;
 
   @Override
-  public LinkEvent save(LinkEvent linkEvent) {
-    return linkEventDAO.save(linkEvent);
+  public LinkEvent save(LinkEvent event) {
+    return linkEventDAO.save(event);
   }
 
   @Override

@@ -11,7 +11,11 @@ public class Constants {
 
   public final static String BLUETOOTH_DATA_TOPIC_ROUTES = "vicroad-routes";
 
+  public final static String BLUETOOTH_DATA_TOPIC_ROUTES_WITH_GEO = "vicroad-routesWithGeo";
+
   public final static String BLUETOOTH_DATA_TOPIC_SITES = "vicroad-sites";
+
+  public final static String BLUETOOTH_DATA_TOPIC_SITES_WITH_GEO = "vicroad-sitesWithGeo";
 
   public final static String KAFKA_PARTITION_COUNT = "1";
 
@@ -31,21 +35,9 @@ public class Constants {
   public final static String BLUETOOTH_DATA_ARCHIVES_DIR =
       VICROAD_DATA_ARCHIVE_FAILED_DIR + "/bluetooth";
 
-  public final static String LINKS_ARCHIVES_DIR = BLUETOOTH_DATA_ARCHIVES_DIR + "/links";
+  public final static String BLUETOOTH_DATA_ARCHIVES_TOPIC_DIR =
+      BLUETOOTH_DATA_ARCHIVES_DIR + "/%s";
 
-  public final static String LINKS_FILE_PATH = LINKS_ARCHIVES_DIR + "/%s_%d.json";
-
-  public final static String LINKS_WITH_GEO_ARCHIVES_DIR =
-      BLUETOOTH_DATA_ARCHIVES_DIR + "/links_with_geo";
-
-  public final static String LINKS_WITH_GEO_FILE_PATH = LINKS_WITH_GEO_ARCHIVES_DIR + "/%s_%d.json";
-
-  public final static String ROUTES_ARCHIVES_DIR = BLUETOOTH_DATA_ARCHIVES_DIR + "/routes";
-
-  public final static String ROUTES_FILE_PATH = ROUTES_ARCHIVES_DIR + "/%s_%d.json";
-
-  public final static String SITES_ARCHIVES_DIR = BLUETOOTH_DATA_ARCHIVES_DIR + "/sites";
-
-  public final static String SITES_FILE_PATH = SITES_ARCHIVES_DIR + "/%s_%d.json";
-
+  public final static String BLUETOOTH_DATA_ARCHIVES_EVENT_PATH =
+      BLUETOOTH_DATA_ARCHIVES_TOPIC_DIR + "/%s_%d.json";
 }

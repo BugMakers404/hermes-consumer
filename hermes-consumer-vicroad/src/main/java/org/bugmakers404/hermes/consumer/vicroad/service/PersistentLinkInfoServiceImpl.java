@@ -22,21 +22,23 @@ public class PersistentLinkInfoServiceImpl implements PersistentLinkInfoService 
   private final LinkInfoDAO linkInfoDAO;
 
   @Override
-  public LinkInfo saveIfChanged(LinkInfo linkInfo) {
-    LinkInfo latestLinkInfo = linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(linkInfo.getLinkId());
+  public LinkInfo saveIfChanged(LinkInfo infoEvent) {
+    LinkInfo latestLinkInfo = linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(
+        infoEvent.getLinkId());
 
-    if (latestLinkInfo == null || !latestLinkInfo.isSame(linkInfo)) {
-      return linkInfoDAO.save(linkInfo);
+    if (latestLinkInfo == null || !latestLinkInfo.isSame(infoEvent)) {
+      return linkInfoDAO.save(infoEvent);
     } else {
       return latestLinkInfo;
     }
   }
 
   @Override
-  public List<LinkInfo> saveAllIfChanged(List<LinkInfo> allLinkInfo) {
-    List<LinkInfo> savedLinkInfo = allLinkInfo.stream().filter(event -> {
-      LinkInfo latestLinkInfo = linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(event.getLinkId());
-      return Objects.isNull(latestLinkInfo) || !latestLinkInfo.isSame(event);
+  public List<LinkInfo> saveAllIfChanged(List<LinkInfo> allInfoEvents) {
+    List<LinkInfo> savedLinkInfo = allInfoEvents.stream().filter(linkInfo -> {
+      LinkInfo latestLinkInfo = linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(
+          linkInfo.getLinkId());
+      return Objects.isNull(latestLinkInfo) || !latestLinkInfo.isSame(linkInfo);
     }).collect(Collectors.toList());
     return linkInfoDAO.saveAll(savedLinkInfo);
   }

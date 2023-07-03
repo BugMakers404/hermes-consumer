@@ -1,5 +1,6 @@
 package org.bugmakers404.hermes.consumer.vicroad.service;
 
+import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +19,14 @@ public class PersistentSiteEventServiceImpl implements PersistentSiteEventServic
   @NonNull
   private final SiteEventDAO siteEventDAO;
 
+
   @Override
-  public SiteEvent saveSiteEvent(SiteEvent siteEvent) {
-    return siteEventDAO.save(siteEvent);
+  public SiteEvent save(SiteEvent event) {
+    return siteEventDAO.save(event);
   }
 
+  @Override
+  public List<SiteEvent> saveAll(List<SiteEvent> events) {
+    return siteEventDAO.saveAll(events);
+  }
 }
