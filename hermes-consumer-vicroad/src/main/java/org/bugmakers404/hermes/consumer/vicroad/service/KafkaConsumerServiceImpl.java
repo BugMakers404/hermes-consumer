@@ -1,19 +1,18 @@
 package org.bugmakers404.hermes.consumer.vicroad.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.bugmakers404.hermes.consumer.vicroad.entity.links.LinkEvent;
-import org.bugmakers404.hermes.consumer.vicroad.entity.links.LinkInfo;
-import org.bugmakers404.hermes.consumer.vicroad.entity.routes.RouteEvent;
-import org.bugmakers404.hermes.consumer.vicroad.entity.routes.RouteInfo;
-import org.bugmakers404.hermes.consumer.vicroad.entity.sites.SiteEvent;
-import org.bugmakers404.hermes.consumer.vicroad.entity.sites.SiteInfo;
+import org.bugmakers404.hermes.consumer.vicroad.entity.LinkInfo;
+import org.bugmakers404.hermes.consumer.vicroad.entity.LinkStats;
+import org.bugmakers404.hermes.consumer.vicroad.entity.RouteInfo;
+import org.bugmakers404.hermes.consumer.vicroad.entity.RouteStats;
+import org.bugmakers404.hermes.consumer.vicroad.entity.SiteInfo;
+import org.bugmakers404.hermes.consumer.vicroad.entity.SiteStats;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.FailedEventsArchiveService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkEventService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkInfoService;
@@ -45,35 +44,28 @@ public class KafkaConsumerServiceImpl {
 
   private final FailedEventsArchiveService s3Archiver;
 
-  private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   @KafkaListener(topics = {
       Constants.BLUETOOTH_DATA_TOPIC_LINKS}, clientIdPrefix = Constants.BLUETOOTH_DATA_TOPIC_LINKS, concurrency = Constants.KAFKA_PARTITION_COUNT, batch = "true")
   public void persistLinkEvents(@NonNull List<ConsumerRecord<String, String>> records,
       Acknowledgment ack) {
 
-    List<LinkEvent> linkEvents = new ArrayList<>();
+    List<LinkStats> linkStatsBatch = new ArrayList<>(records.size());
 
     for (ConsumerRecord<String, String> record : records) {
-      String[] timestampAndLinkId = record.key().split("_");
-      OffsetDateTime timestamp = OffsetDateTime.parse(timestampAndLinkId[0]);
-      Integer linkId = Integer.parseInt(timestampAndLinkId[1]);
-
       try {
-        LinkEvent linkEvent = objectMapper.readValue(record.value(), LinkEvent.class);
-        linkEvent.setId(null);
-        linkEvent.setLinkId(linkId);
-        linkEvent.setTimestamp(timestamp);
-        linkEvents.add(linkEvent);
+        LinkStats linkStats = objectMapper.readValue(record.value(), LinkStats.class);
+        linkStatsBatch.add(linkStats);
       } catch (Exception e) {
-        log.error("{} - Failed to deserialize the event with key {}-{}: {}",
-            Constants.BLUETOOTH_DATA_TOPIC_LINKS, timestamp, linkId, e.getMessage(), e);
-        s3Archiver.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_LINKS, timestamp, linkId,
+        log.error("{} - Failed to deserialize the event with key {}: {}",
+            Constants.BLUETOOTH_DATA_TOPIC_LINKS, record.key(), e.getMessage(), e);
+        s3Archiver.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_LINKS, record.key(),
             record.value());
       }
     }
 
-    linkEventService.saveAll(linkEvents);
+    linkEventService.saveAll(linkStatsBatch);
     ack.acknowledge();
   }
 
@@ -82,28 +74,21 @@ public class KafkaConsumerServiceImpl {
   public void persistLinkWithGeoEvents(@NonNull List<ConsumerRecord<String, String>> records,
       Acknowledgment ack) {
 
-    List<LinkInfo> linkInfos = new ArrayList<>(records.size());
+    List<LinkInfo> linkInfoBatch = new ArrayList<>(records.size());
 
     for (ConsumerRecord<String, String> record : records) {
-      String[] timestampAndLinkId = record.key().split("_");
-      OffsetDateTime timestamp = OffsetDateTime.parse(timestampAndLinkId[0]);
-      Integer linkId = Integer.parseInt(timestampAndLinkId[1]);
-
       try {
         LinkInfo linkInfo = objectMapper.readValue(record.value(), LinkInfo.class);
-        linkInfo.setId(null);
-        linkInfo.setLinkId(linkId);
-        linkInfo.setTimestamp(timestamp);
-        linkInfos.add(linkInfo);
+        linkInfoBatch.add(linkInfo);
       } catch (Exception e) {
-        log.error("{} - Failed to deserialize the event with key {}-{}: {}",
-            Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, timestamp, linkId, e.getMessage(), e);
-        s3Archiver.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, timestamp,
-            linkId, record.value());
+        log.error("{} - Failed to deserialize the event with key {}: {}",
+            Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, record.key(), e.getMessage(), e);
+        s3Archiver.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_LINKS_WITH_GEO, record.key(),
+            record.value());
       }
     }
 
-    linkInfoService.saveAllIfChanged(linkInfos);
+    linkInfoService.saveAllIfChanged(linkInfoBatch);
     ack.acknowledge();
   }
 
@@ -112,28 +97,21 @@ public class KafkaConsumerServiceImpl {
   public void persistRouteEvents(@NonNull List<ConsumerRecord<String, String>> records,
       Acknowledgment ack) {
 
-    List<RouteEvent> routeEvents = new ArrayList<>(records.size());
+    List<RouteStats> routeStatsBatch = new ArrayList<>(records.size());
 
     for (ConsumerRecord<String, String> record : records) {
-      String[] timestampAndRouteId = record.key().split("_");
-      OffsetDateTime timestamp = OffsetDateTime.parse(timestampAndRouteId[0]);
-      Integer routeId = Integer.parseInt(timestampAndRouteId[1]);
-
       try {
-        RouteEvent routeEvent = objectMapper.readValue(record.value(), RouteEvent.class);
-        routeEvent.setId(null);
-        routeEvent.setRouteId(routeId);
-        routeEvent.setTimestamp(timestamp);
-        routeEvents.add(routeEvent);
+        RouteStats routeStats = objectMapper.readValue(record.value(), RouteStats.class);
+        routeStatsBatch.add(routeStats);
       } catch (Exception e) {
-        log.error("{} - Failed to deserialize the event with key {}-{}: {}",
-            Constants.BLUETOOTH_DATA_TOPIC_ROUTES, timestamp, routeId, e.getMessage(), e);
-        s3Archiver.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_ROUTES, timestamp, routeId,
+        log.error("{} - Failed to deserialize the event with key {}: {}",
+            Constants.BLUETOOTH_DATA_TOPIC_ROUTES, record.key(), e.getMessage(), e);
+        s3Archiver.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_ROUTES, record.key(),
             record.value());
       }
     }
 
-    routeEventService.saveAll(routeEvents);
+    routeEventService.saveAll(routeStatsBatch);
     ack.acknowledge();
   }
 
@@ -142,28 +120,21 @@ public class KafkaConsumerServiceImpl {
   public void persistRouteWithGeoEvents(@NonNull List<ConsumerRecord<String, String>> records,
       Acknowledgment ack) {
 
-    List<RouteInfo> routeInfos = new ArrayList<>(records.size());
+    List<RouteInfo> routeInfoBatch = new ArrayList<>(records.size());
 
     for (ConsumerRecord<String, String> record : records) {
-      String[] timestampAndRouteId = record.key().split("_");
-      OffsetDateTime timestamp = OffsetDateTime.parse(timestampAndRouteId[0]);
-      Integer routeId = Integer.parseInt(timestampAndRouteId[1]);
-
       try {
         RouteInfo routeInfo = objectMapper.readValue(record.value(), RouteInfo.class);
-        routeInfo.setId(null);
-        routeInfo.setRouteId(routeId);
-        routeInfo.setTimestamp(timestamp);
-        routeInfos.add(routeInfo);
+        routeInfoBatch.add(routeInfo);
       } catch (Exception e) {
-        log.error("{} - Failed to deserialize the event with key {}-{}: {}",
-            Constants.BLUETOOTH_DATA_TOPIC_ROUTES, timestamp, routeId, e.getMessage(), e);
-        s3Archiver.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_ROUTES_WITH_GEO, timestamp,
-            routeId, record.value());
+        log.error("{} - Failed to deserialize the event with key {}: {}",
+            Constants.BLUETOOTH_DATA_TOPIC_ROUTES, record.key(), e.getMessage(), e);
+        s3Archiver.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_ROUTES_WITH_GEO, record.key(),
+            record.value());
       }
     }
 
-    routeInfoService.saveAllIfChanged(routeInfos);
+    routeInfoService.saveAllIfChanged(routeInfoBatch);
     ack.acknowledge();
   }
 
@@ -172,28 +143,21 @@ public class KafkaConsumerServiceImpl {
   public void persistSiteEvents(@NonNull List<ConsumerRecord<String, String>> records,
       Acknowledgment ack) {
 
-    List<SiteEvent> siteEvents = new ArrayList<>(records.size());
+    List<SiteStats> siteStatsBatch = new ArrayList<>(records.size());
 
     for (ConsumerRecord<String, String> record : records) {
-      String[] timestampAndRouteId = record.key().split("_");
-      OffsetDateTime timestamp = OffsetDateTime.parse(timestampAndRouteId[0]);
-      Integer siteId = Integer.parseInt(timestampAndRouteId[1]);
-
       try {
-        SiteEvent siteEvent = objectMapper.readValue(record.value(), SiteEvent.class);
-        siteEvent.setId(null);
-        siteEvent.setSiteId(siteId);
-        siteEvent.setTimestamp(timestamp);
-        siteEvents.add(siteEvent);
+        SiteStats siteStats = objectMapper.readValue(record.value(), SiteStats.class);
+        siteStatsBatch.add(siteStats);
       } catch (Exception e) {
-        log.error("{} - Failed to persist the event with key {}-{}: {}",
-            Constants.BLUETOOTH_DATA_TOPIC_SITES, timestamp, siteId, e.getMessage(), e);
-        s3Archiver.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_SITES, timestamp, siteId,
+        log.error("{} - Failed to persist the event with key {}: {}",
+            Constants.BLUETOOTH_DATA_TOPIC_SITES, record.key(), e.getMessage(), e);
+        s3Archiver.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_SITES, record.key(),
             record.value());
       }
     }
 
-    siteEventService.saveAll(siteEvents);
+    siteEventService.saveAll(siteStatsBatch);
     ack.acknowledge();
   }
 
@@ -202,28 +166,22 @@ public class KafkaConsumerServiceImpl {
   public void persistSiteWithGeoEvents(@NonNull List<ConsumerRecord<String, String>> records,
       Acknowledgment ack) {
 
-    List<SiteInfo> siteInfos = new ArrayList<>(records.size());
+    List<SiteInfo> siteInfoBatch = new ArrayList<>(records.size());
 
     for (ConsumerRecord<String, String> record : records) {
-      String[] timestampAndRouteId = record.key().split("_");
-      OffsetDateTime timestamp = OffsetDateTime.parse(timestampAndRouteId[0]);
-      Integer siteId = Integer.parseInt(timestampAndRouteId[1]);
 
       try {
         SiteInfo siteInfo = objectMapper.readValue(record.value(), SiteInfo.class);
-        siteInfo.setId(null);
-        siteInfo.setSiteId(siteId);
-        siteInfo.setTimestamp(timestamp);
-        siteInfos.add(siteInfo);
+        siteInfoBatch.add(siteInfo);
       } catch (Exception e) {
-        log.error("{} - Failed to persist the event with key {}-{}: {}",
-            Constants.BLUETOOTH_DATA_TOPIC_SITES_WITH_GEO, timestamp, siteId, e.getMessage(), e);
-        s3Archiver.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_SITES_WITH_GEO, timestamp,
-            siteId, record.value());
+        log.error("{} - Failed to persist the event with key {}: {}",
+            Constants.BLUETOOTH_DATA_TOPIC_SITES_WITH_GEO, record.key(), e.getMessage(), e);
+        s3Archiver.archiveFailedEvent(Constants.BLUETOOTH_DATA_TOPIC_SITES_WITH_GEO, record.key(),
+            record.value());
       }
     }
 
-    siteInfoService.saveAllIfChanged(siteInfos);
+    siteInfoService.saveAllIfChanged(siteInfoBatch);
     ack.acknowledge();
   }
 

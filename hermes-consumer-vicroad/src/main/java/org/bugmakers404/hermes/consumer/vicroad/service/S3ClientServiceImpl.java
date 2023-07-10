@@ -1,5 +1,10 @@
 package org.bugmakers404.hermes.consumer.vicroad.service;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,13 +16,6 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.OffsetDateTime;
-
 @Slf4j
 @Service
 @Profile("prod")
@@ -27,20 +25,18 @@ public class S3ClientServiceImpl implements FailedEventsArchiveService {
   private final S3Client s3Client;
 
   @Override
-  public void archiveFailedEvent(@NonNull String topic, @NonNull OffsetDateTime timestamp,
-      @NonNull Integer id, String event) {
+  public void archiveFailedEvent(@NonNull String topic, @NonNull String key, String event) {
 
-    String filePath = Constants.BLUETOOTH_DATA_ARCHIVES_EVENT_PATH.formatted(topic,
-        timestamp.format(Constants.DATE_TIME_FORMATTER_FOR_FILENAME), id);
+    String filePath = Constants.BLUETOOTH_DATA_ARCHIVES_EVENT_PATH.formatted(topic, key);
 
     try {
       saveStringAsJsonFile(filePath, event);
-      log.info("{} - Succeed to archive the non-persistent event with key {}-{} in S3 bucket {}",
-          topic, timestamp, id, Constants.HERMES_DATA_BUCKET_NAME);
+      log.info("{} - Succeed to archive the non-persistent event with key {} in S3 bucket {}",
+          topic, key, Constants.HERMES_DATA_BUCKET_NAME);
     } catch (Exception e) {
       log.error(
-          "{} - Failed to archive the non-persistent event with key {}-{} in S3 bucket {}: {}",
-          topic, timestamp, id, Constants.HERMES_DATA_BUCKET_NAME, e.getMessage(), e);
+          "{} - Failed to archive the non-persistent event with key {} in S3 bucket {}: {}",
+          topic, key, Constants.HERMES_DATA_BUCKET_NAME, e.getMessage(), e);
       storeEventsToLocalFiles(topic, filePath, event);
     }
 

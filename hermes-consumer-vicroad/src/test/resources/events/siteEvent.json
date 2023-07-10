@@ -1,0 +1,43 @@
+{
+  "href": "https://addinsight.itss.roads.vic.gov.au/api/sites/13",
+  "id": 13,
+  "number": 13,
+  "organization": {
+    "href": "https://addinsight.itss.roads.vic.gov.au/api/organizations/1",
+    "id": 1
+  },
+  "enabled": true,
+  "draft": false,
+  "name": "SAGE - 2815. HUME FWY/COOPER",
+  "beacon_index": 977,
+  "ios_name": null,
+  "android_name": null,
+  "location": [
+    145.22583,
+    -37.9576073
+  ],
+  "broadcast_travel_times": [],
+  "devices": [
+    {
+      "href": "https://addinsight.itss.roads.vic.gov.au/api/devices/1549",
+      "id": 1549
+    }
+  ],
+  "school_crossings": [],
+  "latest_stats": {
+    "interval_start": "2023-03-03T23:40:00+11:00",
+    "probe_count": 0,
+    "raw_probe_count": 0,
+    "estimated_event_count": 0,
+    "average_duration": 0
+  },
+  "latest_raw_stats": null,
+  "latest_source_id_type_stats": null,
+  "latest_active_time_in_range_stats": null,
+  "broadcast_message": null,
+  "beacon_stats": null,
+  "broadcast_travel_time": null,
+  "beacon_events": null,
+  "incidents": null,
+  "ibeacon_data": null
+}

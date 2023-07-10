@@ -1,7 +1,7 @@
 package org.bugmakers404.hermes.consumer.vicroad.service.interfaces;
 
-import org.bugmakers404.hermes.consumer.vicroad.entity.links.LinkEvent;
+import org.bugmakers404.hermes.consumer.vicroad.entity.LinkStats;
 
-public interface PersistentLinkEventService extends PersistentEventService<LinkEvent> {
+public interface PersistentLinkEventService extends PersistentEventService<LinkStats> {
 
 }

@@ -1,0 +1,48 @@
+{
+  "href": "https://addinsight.itss.roads.vic.gov.au/api/links/3",
+  "id": 3,
+  "name": "Bulleen Rd, Eastern Fwy to Manningham Rd",
+  "public_name": null,
+  "organization": {
+    "href": "https://addinsight.itss.roads.vic.gov.au/api/organizations/1",
+    "id": 1
+  },
+  "origin": {
+    "href": "https://addinsight.itss.roads.vic.gov.au/api/sites/2827",
+    "id": 2827
+  },
+  "destination": {
+    "href": "https://addinsight.itss.roads.vic.gov.au/api/sites/686",
+    "id": 686
+  },
+  "enabled": true,
+  "draft": false,
+  "length": 2000,
+  "min_number_of_lanes": 1,
+  "minimum_tt": 145,
+  "is_freeway": false,
+  "direction": "NB",
+  "coordinates": null,
+  "latest_stats": {
+    "interval_start": "2023-03-03T11:37:00+11:00",
+    "travel_time": 192,
+    "delay": 47,
+    "speed": 37,
+    "excess_delay": 18,
+    "congestion": 1,
+    "score": 0,
+    "flow_restriction_score": 0,
+    "average_density": 76,
+    "density": 89,
+    "enough_data": true,
+    "ignored": false,
+    "closed": false
+  },
+  "latest_source_id_type_stats": null,
+  "trend": null,
+  "incidents": [],
+  "link_params": null,
+  "excluded_source_id_types": null,
+  "emulated_travel_time": null,
+  "closed_or_ignored": null
+}

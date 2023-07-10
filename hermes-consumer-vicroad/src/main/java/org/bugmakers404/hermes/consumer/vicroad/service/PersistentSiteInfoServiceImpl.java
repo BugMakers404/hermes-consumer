@@ -7,7 +7,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bugmakers404.hermes.consumer.vicroad.dao.SiteInfoDAO;
-import org.bugmakers404.hermes.consumer.vicroad.entity.sites.SiteInfo;
+import org.bugmakers404.hermes.consumer.vicroad.entity.SiteInfo;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteInfoService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

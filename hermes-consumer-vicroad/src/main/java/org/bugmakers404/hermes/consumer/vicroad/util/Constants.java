@@ -20,6 +20,11 @@ public class Constants {
   public final static String KAFKA_PARTITION_COUNT = "1";
 
   // Constants for Timestamp format
+  public final static String DATE_TIME_PATTERN_IN_EVENTS = "yyyy-MM-dd'T'HH:mm:ssXXX";
+
+  public final static DateTimeFormatter DATE_TIME_FORMATTER_IN_EVENTS = DateTimeFormatter.ofPattern(
+      DATE_TIME_PATTERN_IN_EVENTS);
+
   public final static DateTimeFormatter DATE_TIME_FORMATTER_FOR_FILENAME = DateTimeFormatter.ofPattern(
       "yyyy-MM-dd_HH-mm-ssx");
 
@@ -39,5 +44,5 @@ public class Constants {
       BLUETOOTH_DATA_ARCHIVES_DIR + "/%s";
 
   public final static String BLUETOOTH_DATA_ARCHIVES_EVENT_PATH =
-      BLUETOOTH_DATA_ARCHIVES_TOPIC_DIR + "/%s_%d.json";
+      BLUETOOTH_DATA_ARCHIVES_TOPIC_DIR + "/%s.json";
 }

@@ -10,7 +10,7 @@ import static org.testng.Assert.assertNotEquals;
 
 import java.util.List;
 import org.bugmakers404.hermes.consumer.vicroad.dao.RouteInfoDAO;
-import org.bugmakers404.hermes.consumer.vicroad.entity.routes.RouteInfo;
+import org.bugmakers404.hermes.consumer.vicroad.entity.RouteInfo;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteInfoService;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

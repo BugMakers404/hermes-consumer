@@ -5,7 +5,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bugmakers404.hermes.consumer.vicroad.dao.SiteEventDAO;
-import org.bugmakers404.hermes.consumer.vicroad.entity.sites.SiteEvent;
+import org.bugmakers404.hermes.consumer.vicroad.entity.SiteStats;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteEventService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +21,12 @@ public class PersistentSiteEventServiceImpl implements PersistentSiteEventServic
 
 
   @Override
-  public SiteEvent save(SiteEvent event) {
+  public SiteStats save(SiteStats event) {
     return siteEventDAO.save(event);
   }
 
   @Override
-  public List<SiteEvent> saveAll(List<SiteEvent> events) {
+  public List<SiteStats> saveAll(List<SiteStats> events) {
     return siteEventDAO.saveAll(events);
   }
 }

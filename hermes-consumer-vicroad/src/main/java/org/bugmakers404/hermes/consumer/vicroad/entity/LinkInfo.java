@@ -1,27 +1,29 @@
-package org.bugmakers404.hermes.consumer.vicroad.entity.links;
+package org.bugmakers404.hermes.consumer.vicroad.entity;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.io.Serializable;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bugmakers404.hermes.consumer.vicroad.entity.deserializer.LinkInfoDeserializer;
+import org.bugmakers404.hermes.consumer.vicroad.util.Constants;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Objects;
-
 @Slf4j
 @Data
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonDeserialize(using = LinkInfoDeserializer.class)
 @Document(collection = "vicroad.bluetooth.link.info")
 @CompoundIndex(name = "linkId_timestamp_idx", def = "{'linkId': 1, 'timestamp': -1}")
 public class LinkInfo implements Serializable {
@@ -33,29 +35,26 @@ public class LinkInfo implements Serializable {
   private Integer linkId;
 
   @Indexed
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_TIME_PATTERN_IN_EVENTS)
   private OffsetDateTime timestamp;
 
   private String name;
 
-  @JsonAlias("origin.id")
   private Integer originId;
 
-  @JsonAlias("destination.id")
   private Integer destinationId;
 
   private Integer length;
 
-  @JsonAlias("min_number_of_lanes")
   private Integer minNumberOfLanes;
 
-  @JsonAlias("minimum_tt")
-  private Integer minTravelTime;
-
-  @JsonAlias("is_freeway")
-  private Boolean isFreeway;
+  private Boolean freeway;
 
   private String direction;
+
+  private Boolean enabled;
+
+  private Boolean draft;
 
   private List<List<Double>> coordinates;
 
@@ -73,9 +72,10 @@ public class LinkInfo implements Serializable {
         && Objects.equals(destinationId, other.destinationId)
         && Objects.equals(length, other.length)
         && Objects.equals(minNumberOfLanes, other.minNumberOfLanes)
-        && Objects.equals(minTravelTime, other.minTravelTime)
-        && Objects.equals(isFreeway, other.isFreeway)
+        && Objects.equals(freeway, other.freeway)
         && Objects.equals(direction, other.direction)
+        && Objects.equals(enabled, other.enabled)
+        && Objects.equals(draft, other.draft)
         && Objects.equals(coordinates, other.coordinates);
   }
 

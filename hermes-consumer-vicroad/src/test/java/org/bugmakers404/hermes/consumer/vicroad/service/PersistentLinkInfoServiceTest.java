@@ -10,7 +10,7 @@ import static org.testng.Assert.assertNotEquals;
 
 import java.util.List;
 import org.bugmakers404.hermes.consumer.vicroad.dao.LinkInfoDAO;
-import org.bugmakers404.hermes.consumer.vicroad.entity.links.LinkInfo;
+import org.bugmakers404.hermes.consumer.vicroad.entity.LinkInfo;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkInfoService;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -44,7 +44,7 @@ public class PersistentLinkInfoServiceTest {
 
   @Test
   public void testSaveAllEvents() {
-    LinkInfo newLinkInfo1 = new LinkInfo();  // You should set any necessary properties on the events
+    LinkInfo newLinkInfo1 = new LinkInfo();
     LinkInfo newLinkInfo2 = new LinkInfo();
     List<LinkInfo> events = List.of(newLinkInfo1, newLinkInfo2);
     when(linkInfoDAO.findTopByLinkIdOrderByTimestampDesc(newLinkInfo1.getLinkId())).thenReturn(
@@ -67,8 +67,7 @@ public class PersistentLinkInfoServiceTest {
     linkInfoInDB.setDestinationId(2);
     linkInfoInDB.setLength(3);
     linkInfoInDB.setMinNumberOfLanes(4);
-    linkInfoInDB.setMinTravelTime(5);
-    linkInfoInDB.setIsFreeway(true);
+    linkInfoInDB.setFreeway(true);
     linkInfoInDB.setDirection("NB");
     linkInfoInDB.setCoordinates(List.of(List.of(1d, 2d), List.of(3d, 4d)));
 
@@ -78,8 +77,7 @@ public class PersistentLinkInfoServiceTest {
     newLinkInfo.setDestinationId(2);
     newLinkInfo.setLength(3);
     newLinkInfo.setMinNumberOfLanes(4);
-    newLinkInfo.setMinTravelTime(5);
-    newLinkInfo.setIsFreeway(true);
+    newLinkInfo.setFreeway(true);
     newLinkInfo.setDirection("NB");
     newLinkInfo.setCoordinates(List.of(List.of(1d, 2d), List.of(3d, 4d)));
 
@@ -100,8 +98,7 @@ public class PersistentLinkInfoServiceTest {
     linkInfoInDB.setDestinationId(2);
     linkInfoInDB.setLength(3);
     linkInfoInDB.setMinNumberOfLanes(4);
-    linkInfoInDB.setMinTravelTime(5);
-    linkInfoInDB.setIsFreeway(true);
+    linkInfoInDB.setFreeway(true);
     linkInfoInDB.setDirection("NB");
     linkInfoInDB.setCoordinates(List.of(List.of(1d, 2d), List.of(3d, 4d)));
 
@@ -111,8 +108,7 @@ public class PersistentLinkInfoServiceTest {
     sameLinkInfo.setDestinationId(2);
     sameLinkInfo.setLength(3);
     sameLinkInfo.setMinNumberOfLanes(4);
-    sameLinkInfo.setMinTravelTime(5);
-    sameLinkInfo.setIsFreeway(true);
+    sameLinkInfo.setFreeway(true);
     sameLinkInfo.setDirection("NB");
     sameLinkInfo.setCoordinates(List.of(List.of(1d, 2d), List.of(3d, 4d)));
 

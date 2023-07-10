@@ -5,7 +5,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bugmakers404.hermes.consumer.vicroad.dao.LinkEventDAO;
-import org.bugmakers404.hermes.consumer.vicroad.entity.links.LinkEvent;
+import org.bugmakers404.hermes.consumer.vicroad.entity.LinkStats;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkEventService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,12 +20,12 @@ public class PersistentLinkEventServiceImpl implements PersistentLinkEventServic
   private final LinkEventDAO linkEventDAO;
 
   @Override
-  public LinkEvent save(LinkEvent event) {
+  public LinkStats save(LinkStats event) {
     return linkEventDAO.save(event);
   }
 
   @Override
-  public List<LinkEvent> saveAll(List<LinkEvent> events) {
+  public List<LinkStats> saveAll(List<LinkStats> events) {
     return linkEventDAO.saveAll(events);
   }
 

@@ -7,7 +7,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bugmakers404.hermes.consumer.vicroad.dao.LinkInfoDAO;
-import org.bugmakers404.hermes.consumer.vicroad.entity.links.LinkInfo;
+import org.bugmakers404.hermes.consumer.vicroad.entity.LinkInfo;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkInfoService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

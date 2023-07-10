@@ -1,0 +1,66 @@
+{
+  "href": "https://addinsight.itss.roads.vic.gov.au/api/routes/2",
+  "id": 2,
+  "name": "Greensborough Hwy (SB), M80 to Eastern Fwy",
+  "organization": {
+    "href": "https://addinsight.itss.roads.vic.gov.au/api/organizations/1",
+    "id": 1
+  },
+  "primary_road_name": "Greensborough Hwy - Rosanna Rd - Bulleen Rd (SB)",
+  "start_end_description": "Western Ring Rd to Eastern Fwy",
+  "enabled": true,
+  "draft": false,
+  "stdev_adjust_multiplier": 1.0,
+  "length": 11110,
+  "links": [
+    {
+      "href": "https://addinsight.itss.roads.vic.gov.au/api/links/5",
+      "id": 5
+    },
+    {
+      "href": "https://addinsight.itss.roads.vic.gov.au/api/links/7",
+      "id": 7
+    },
+    {
+      "href": "https://addinsight.itss.roads.vic.gov.au/api/links/9",
+      "id": 9
+    },
+    {
+      "href": "https://addinsight.itss.roads.vic.gov.au/api/links/1238",
+      "id": 1238
+    },
+    {
+      "href": "https://addinsight.itss.roads.vic.gov.au/api/links/3368",
+      "id": 3368
+    },
+    {
+      "href": "https://addinsight.itss.roads.vic.gov.au/api/links/3370",
+      "id": 3370
+    },
+    {
+      "href": "https://addinsight.itss.roads.vic.gov.au/api/links/3372",
+      "id": 3372
+    },
+    {
+      "href": "https://addinsight.itss.roads.vic.gov.au/api/links/3367",
+      "id": 3367
+    },
+    {
+      "href": "https://addinsight.itss.roads.vic.gov.au/api/links/3365",
+      "id": 3365
+    },
+    {
+      "href": "https://addinsight.itss.roads.vic.gov.au/api/links/128",
+      "id": 128
+    }
+  ],
+  "latest_stats": {
+    "interval_start": "2023-03-03T23:49:00+11:00",
+    "length": 11110,
+    "travel_time": 938,
+    "delay": 77,
+    "speed": 42,
+    "excess_delay": -1,
+    "data_status": "insufficient_live"
+  }
+}

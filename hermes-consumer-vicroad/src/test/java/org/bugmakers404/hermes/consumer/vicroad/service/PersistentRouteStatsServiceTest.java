@@ -7,14 +7,14 @@ import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 import org.bugmakers404.hermes.consumer.vicroad.dao.RouteEventDAO;
-import org.bugmakers404.hermes.consumer.vicroad.entity.routes.RouteEvent;
+import org.bugmakers404.hermes.consumer.vicroad.entity.RouteStats;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteEventService;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class PersistentRouteEventServiceTest {
+public class PersistentRouteStatsServiceTest {
 
   @Mock
   private RouteEventDAO routeEventDAO;
@@ -29,12 +29,12 @@ public class PersistentRouteEventServiceTest {
 
   @Test
   public void saveRouteEventTest() {
-    RouteEvent routeEvent = new RouteEvent();
-    when(routeEventDAO.save(any(RouteEvent.class))).thenReturn(routeEvent);
+    RouteStats routeStats = new RouteStats();
+    when(routeEventDAO.save(any(RouteStats.class))).thenReturn(routeStats);
 
-    RouteEvent result = routeEventService.save(routeEvent);
+    RouteStats result = routeEventService.save(routeStats);
 
-    verify(routeEventDAO, times(1)).save(routeEvent);
-    assertEquals(routeEvent, result);
+    verify(routeEventDAO, times(1)).save(routeStats);
+    assertEquals(routeStats, result);
   }
 }

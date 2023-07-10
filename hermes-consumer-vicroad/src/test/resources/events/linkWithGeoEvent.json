@@ -1,0 +1,133 @@
+{
+  "href": "https://addinsight.itss.roads.vic.gov.au/api/links/3",
+  "id": 3,
+  "name": "Bulleen Rd, Eastern Fwy to Manningham Rd",
+  "public_name": null,
+  "organization": {
+    "href": "https://addinsight.itss.roads.vic.gov.au/api/organizations/1",
+    "id": 1
+  },
+  "origin": {
+    "href": "https://addinsight.itss.roads.vic.gov.au/api/sites/2827",
+    "id": 2827
+  },
+  "destination": {
+    "href": "https://addinsight.itss.roads.vic.gov.au/api/sites/686",
+    "id": 686
+  },
+  "enabled": true,
+  "draft": false,
+  "length": 2000,
+  "min_number_of_lanes": 1,
+  "minimum_tt": 145,
+  "is_freeway": false,
+  "direction": "NB",
+  "coordinates": [
+    [
+      145.0784,
+      -37.7796249
+    ],
+    [
+      145.078476,
+      -37.7769775
+    ],
+    [
+      145.0785,
+      -37.77606
+    ],
+    [
+      145.0786,
+      -37.7751
+    ],
+    [
+      145.078751,
+      -37.7735329
+    ],
+    [
+      145.079041,
+      -37.7705421
+    ],
+    [
+      145.079163,
+      -37.7693634
+    ],
+    [
+      145.079208,
+      -37.76902
+    ],
+    [
+      145.079269,
+      -37.7686844
+    ],
+    [
+      145.079315,
+      -37.76845
+    ],
+    [
+      145.079391,
+      -37.7682076
+    ],
+    [
+      145.079468,
+      -37.7678947
+    ],
+    [
+      145.080048,
+      -37.7672272
+    ],
+    [
+      145.080566,
+      -37.76673
+    ],
+    [
+      145.081055,
+      -37.76627
+    ],
+    [
+      145.0818,
+      -37.7655754
+    ],
+    [
+      145.082321,
+      -37.7650871
+    ],
+    [
+      145.082382,
+      -37.7648354
+    ],
+    [
+      145.082458,
+      -37.76461
+    ],
+    [
+      145.082687,
+      -37.7637367
+    ],
+    [
+      145.0831,
+      -37.76225
+    ]
+  ],
+  "latest_stats": {
+    "interval_start": "2023-03-03T23:48:30+11:00",
+    "travel_time": 172,
+    "delay": 27,
+    "speed": 41,
+    "excess_delay": 18,
+    "congestion": 1,
+    "score": 0,
+    "flow_restriction_score": 0,
+    "average_density": 223,
+    "density": 61,
+    "enough_data": false,
+    "ignored": false,
+    "closed": false
+  },
+  "latest_source_id_type_stats": null,
+  "trend": null,
+  "incidents": [],
+  "link_params": null,
+  "excluded_source_id_types": null,
+  "emulated_travel_time": null,
+  "closed_or_ignored": null
+}

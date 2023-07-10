@@ -1,4 +1,4 @@
-package org.bugmakers404.hermes.consumer.vicroad.config;
+package org.bugmakers404.hermes.consumer.vicroad.config.mongo;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;

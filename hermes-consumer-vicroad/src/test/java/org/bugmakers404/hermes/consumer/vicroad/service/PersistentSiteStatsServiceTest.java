@@ -7,14 +7,14 @@ import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 import org.bugmakers404.hermes.consumer.vicroad.dao.SiteEventDAO;
-import org.bugmakers404.hermes.consumer.vicroad.entity.sites.SiteEvent;
+import org.bugmakers404.hermes.consumer.vicroad.entity.SiteStats;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteEventService;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class PersistentSiteEventServiceTest {
+public class PersistentSiteStatsServiceTest {
 
   @Mock
   private SiteEventDAO siteEventDAO;
@@ -29,12 +29,12 @@ public class PersistentSiteEventServiceTest {
 
   @Test
   public void saveSiteEventTest() {
-    SiteEvent siteEvent = new SiteEvent();
-    when(siteEventDAO.save(any(SiteEvent.class))).thenReturn(siteEvent);
+    SiteStats siteStats = new SiteStats();
+    when(siteEventDAO.save(any(SiteStats.class))).thenReturn(siteStats);
 
-    SiteEvent result = siteEventService.save(siteEvent);
+    SiteStats result = siteEventService.save(siteStats);
 
-    verify(siteEventDAO, times(1)).save(siteEvent);
-    assertEquals(siteEvent, result);
+    verify(siteEventDAO, times(1)).save(siteStats);
+    assertEquals(siteStats, result);
   }
 }

@@ -7,14 +7,14 @@ import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 import org.bugmakers404.hermes.consumer.vicroad.dao.LinkEventDAO;
-import org.bugmakers404.hermes.consumer.vicroad.entity.links.LinkEvent;
+import org.bugmakers404.hermes.consumer.vicroad.entity.LinkStats;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkEventService;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class PersistentLinkEventServiceTest {
+public class PersistentLinkStatsServiceTest {
 
   @Mock
   private LinkEventDAO linkEventDAO;
@@ -29,12 +29,11 @@ public class PersistentLinkEventServiceTest {
 
   @Test
   public void saveLinkEventTest() {
-    LinkEvent linkEvent = new LinkEvent();
+    LinkStats linkStats = new LinkStats();
+    when(linkEventDAO.save(any(LinkStats.class))).thenReturn(linkStats);
+    LinkStats result = linkEventService.save(linkStats);
 
-    when(linkEventDAO.save(any(LinkEvent.class))).thenReturn(linkEvent);
-    LinkEvent result = linkEventService.save(linkEvent);
-
-    verify(linkEventDAO, times(1)).save(linkEvent);
-    assertEquals(linkEvent, result);
+    verify(linkEventDAO, times(1)).save(linkStats);
+    assertEquals(linkStats, result);
   }
 }

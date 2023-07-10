@@ -10,7 +10,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 public class FileUtils {
 
   public static void deleteDirectory(Path path) throws IOException {
-    Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+    Files.walkFileTree(path, new SimpleFileVisitor<>() {
       @Override
       public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         Files.delete(file);
