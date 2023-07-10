@@ -8,7 +8,7 @@ import static org.testng.Assert.assertEquals;
 
 import org.bugmakers404.hermes.consumer.vicroad.dao.SiteEventDAO;
 import org.bugmakers404.hermes.consumer.vicroad.entity.SiteStats;
-import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteEventService;
+import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteStatsService;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
@@ -19,12 +19,12 @@ public class PersistentSiteStatsServiceTest {
   @Mock
   private SiteEventDAO siteEventDAO;
 
-  private PersistentSiteEventService siteEventService;
+  private PersistentSiteStatsService siteEventService;
 
   @BeforeMethod
   public void setup() {
     MockitoAnnotations.openMocks(this);
-    siteEventService = new PersistentSiteEventServiceImpl(siteEventDAO);
+    siteEventService = new PersistentSiteStatsServiceImpl(siteEventDAO);
   }
 
   @Test

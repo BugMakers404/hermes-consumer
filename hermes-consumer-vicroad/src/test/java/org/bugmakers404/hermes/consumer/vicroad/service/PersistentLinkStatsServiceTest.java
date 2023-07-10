@@ -8,7 +8,7 @@ import static org.testng.Assert.assertEquals;
 
 import org.bugmakers404.hermes.consumer.vicroad.dao.LinkEventDAO;
 import org.bugmakers404.hermes.consumer.vicroad.entity.LinkStats;
-import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkEventService;
+import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkStatsService;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
@@ -19,12 +19,12 @@ public class PersistentLinkStatsServiceTest {
   @Mock
   private LinkEventDAO linkEventDAO;
 
-  private PersistentLinkEventService linkEventService;
+  private PersistentLinkStatsService linkEventService;
 
   @BeforeMethod
   public void setup() {
     MockitoAnnotations.openMocks(this);
-    linkEventService = new PersistentLinkEventServiceImpl(linkEventDAO);
+    linkEventService = new PersistentLinkStatsServiceImpl(linkEventDAO);
   }
 
   @Test

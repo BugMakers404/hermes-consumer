@@ -7,11 +7,11 @@ import static org.mockito.Mockito.verify;
 import java.util.List;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.FailedEventsArchiveService;
-import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkEventService;
+import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkStatsService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkInfoService;
-import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteEventService;
+import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteStatsService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteInfoService;
-import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteEventService;
+import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteStatsService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteInfoService;
 import org.bugmakers404.hermes.consumer.vicroad.util.Constants;
 import org.mockito.Mock;
@@ -23,19 +23,19 @@ import org.testng.annotations.Test;
 public class KafkaConsumerServiceImplTest {
 
   @Mock
-  private PersistentLinkEventService linkEventService;
+  private PersistentLinkStatsService linkEventService;
 
   @Mock
   private PersistentLinkInfoService linkInfoService;
 
   @Mock
-  private PersistentRouteEventService routeEventService;
+  private PersistentRouteStatsService routeEventService;
 
   @Mock
   private PersistentRouteInfoService routeInfoService;
 
   @Mock
-  private PersistentSiteEventService siteEventService;
+  private PersistentSiteStatsService siteEventService;
 
   @Mock
   private PersistentSiteInfoService siteInfoService;

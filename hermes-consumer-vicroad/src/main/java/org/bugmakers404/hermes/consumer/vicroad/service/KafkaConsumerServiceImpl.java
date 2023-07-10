@@ -14,11 +14,11 @@ import org.bugmakers404.hermes.consumer.vicroad.entity.RouteStats;
 import org.bugmakers404.hermes.consumer.vicroad.entity.SiteInfo;
 import org.bugmakers404.hermes.consumer.vicroad.entity.SiteStats;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.FailedEventsArchiveService;
-import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkEventService;
+import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkStatsService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkInfoService;
-import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteEventService;
+import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteStatsService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteInfoService;
-import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteEventService;
+import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteStatsService;
 import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentSiteInfoService;
 import org.bugmakers404.hermes.consumer.vicroad.util.Constants;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -30,15 +30,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaConsumerServiceImpl {
 
-  private final PersistentLinkEventService linkEventService;
+  private final PersistentLinkStatsService linkEventService;
 
   private final PersistentLinkInfoService linkInfoService;
 
-  private final PersistentRouteEventService routeEventService;
+  private final PersistentRouteStatsService routeEventService;
 
   private final PersistentRouteInfoService routeInfoService;
 
-  private final PersistentSiteEventService siteEventService;
+  private final PersistentSiteStatsService siteEventService;
 
   private final PersistentSiteInfoService siteInfoService;
 

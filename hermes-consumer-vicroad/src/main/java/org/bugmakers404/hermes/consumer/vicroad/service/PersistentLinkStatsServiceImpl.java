@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bugmakers404.hermes.consumer.vicroad.dao.LinkEventDAO;
 import org.bugmakers404.hermes.consumer.vicroad.entity.LinkStats;
-import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkEventService;
+import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentLinkStatsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PersistentLinkEventServiceImpl implements PersistentLinkEventService {
+public class PersistentLinkStatsServiceImpl implements PersistentLinkStatsService {
 
   @NonNull
   private final LinkEventDAO linkEventDAO;

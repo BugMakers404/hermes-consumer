@@ -2,7 +2,7 @@ package org.bugmakers404.hermes.consumer.vicroad.service.interfaces;
 
 import java.util.List;
 
-public interface PersistentGeoEventService<T> {
+public interface BasicPersistentInfoService<T> {
 
   T saveIfChanged(T infoEvent);
 

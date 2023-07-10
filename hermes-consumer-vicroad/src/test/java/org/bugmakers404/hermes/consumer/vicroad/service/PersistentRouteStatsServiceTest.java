@@ -8,7 +8,7 @@ import static org.testng.Assert.assertEquals;
 
 import org.bugmakers404.hermes.consumer.vicroad.dao.RouteEventDAO;
 import org.bugmakers404.hermes.consumer.vicroad.entity.RouteStats;
-import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteEventService;
+import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteStatsService;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
@@ -19,12 +19,12 @@ public class PersistentRouteStatsServiceTest {
   @Mock
   private RouteEventDAO routeEventDAO;
 
-  private PersistentRouteEventService routeEventService;
+  private PersistentRouteStatsService routeEventService;
 
   @BeforeMethod
   public void setup() {
     MockitoAnnotations.openMocks(this);
-    routeEventService = new PersistentRouteEventServiceImpl(routeEventDAO);
+    routeEventService = new PersistentRouteStatsServiceImpl(routeEventDAO);
   }
 
   @Test

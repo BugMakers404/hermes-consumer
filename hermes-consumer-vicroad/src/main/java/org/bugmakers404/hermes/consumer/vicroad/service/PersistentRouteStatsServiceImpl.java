@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bugmakers404.hermes.consumer.vicroad.dao.RouteEventDAO;
 import org.bugmakers404.hermes.consumer.vicroad.entity.RouteStats;
-import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteEventService;
+import org.bugmakers404.hermes.consumer.vicroad.service.interfaces.PersistentRouteStatsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PersistentRouteEventServiceImpl implements PersistentRouteEventService {
+public class PersistentRouteStatsServiceImpl implements PersistentRouteStatsService {
 
   @NonNull
   private final RouteEventDAO routeEventDAO;
